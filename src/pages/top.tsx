@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function top() {
+export default function Top() {
     return (
         <div>
             rsthsrth

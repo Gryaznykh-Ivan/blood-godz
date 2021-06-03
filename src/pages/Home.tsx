@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Lobby() {
+export default function Home() {
     return (
         <div>
-            aergaerg
+            erag
         </div>
     )
 }
