@@ -1,0 +1,13 @@
+.card {
+    padding: 20px;
+    background: linear-gradient(121.18deg, #2E2E2E 6.51%, #161616 85.03%);
+    border-radius: 30px;
+}
+
+.active {
+    background: linear-gradient(121.18deg, #F3516E 6.51%, #A30A25 85.03%);
+}
+
+.card > img {
+    border-radius: 30px;
+}

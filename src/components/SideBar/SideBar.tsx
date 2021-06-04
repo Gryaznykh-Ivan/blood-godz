@@ -1,21 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 
 import './SideBar.css'
 
 const isAuth = true; // temporary
 
-export default function SideBar() {
-    const [isOpened, setIsOpened] = useState(false);
+interface PropsFromComponent {
+    isOpened: boolean,
+    isOpenedToggle: () => void
+}
+
+export default function SideBar({ isOpened, isOpenedToggle }: PropsFromComponent) {
 
     return (
         <div className="transition-all duration-700">
-        <div className={ `fixed z-50 top-0 right-0 ${ isOpened ? 'w-80' : 'w-20' } bg-black h-screen flex flex-col py-16 px-4 bg-opacity-80 text-white` }>
+        <div className={ `fixed lg:z-50 z-20 top-0 right-0 scrollbar-hidden overflow-x-hidden ${ isOpened ? 'lg:w-80 w-full' : 'w-20 hidden' } bg-black h-screen lg:flex flex-col py-16 px-4 bg-opacity-80 text-white` }>
             <div className={ `flex flex-col flex-1 items-center ${ isAuth && 'hidden' }` }>
                 <img className="mb-2" src="/static/images/icons/persone.png" alt="" />
                 <div className="">Register</div>
                 <div className="">Login</div>
             </div>
-            <div className={ `flex-1 space-y-4 scrollbar-hidden overflow-x-hidden ${ !isAuth && 'hidden' }` }>
+            <div className={ `flex-1 space-y-4 ${ !isAuth && 'hidden' }` }>
                 <div className="flex">
                     <img className="rounded-xl" src="/static/images/design/avatar.png" alt=""/>
                     <div className={ `ml-5 flex-1 ${ !isOpened && 'hidden' }` }>
@@ -91,7 +95,7 @@ export default function SideBar() {
                     </div>
                 </div>
                 <div className="border-white border-b-1px"></div>
-                <div className={ `flex space-x-10 ${ !isOpened && 'hidden' }` }>
+                <div className={ `flex justify-between ${ !isOpened && 'hidden' }` }>
                     <div className="relative cursor-pointer">
                         <div className="absolute -top-2 -right-4">15</div>
                         <img src="/static/images/icons/group.png" alt="" />
@@ -128,10 +132,33 @@ export default function SideBar() {
                             <div className="text-green-600">Online</div>
                         </div>
                     </div>
+                    <div className="flex space-x-5">
+                        <img src="/static/images/design/avatar.png" alt="" />
+                        <div className="">
+                            <div className="font-medium">Ivan</div>
+                            <div className="text-green-600">Online</div>
+                        </div>
+                    </div>
+                    <div className="flex space-x-5">
+                        <img src="/static/images/design/avatar.png" alt="" />
+                        <div className="">
+                            <div className="font-medium">Ivan</div>
+                            <div className="text-green-600">Online</div>
+                        </div>
+                    </div>
+                    <div className="flex space-x-5">
+                        <img src="/static/images/design/avatar.png" alt="" />
+                        <div className="">
+                            <div className="font-medium">Ivan</div>
+                            <div className="text-green-600">Online</div>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
             </div>
             <div className="py-4">
-                <svg className={ `cursor-pointer transform ${ isOpened && 'rotate-180' }` } width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={ () => setIsOpened(prev => !prev) }>
+                <svg className={ `cursor-pointer transform ${ isOpened && 'rotate-180' }` } width="16" height="26" viewBox="0 0 16 26" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={ () => isOpenedToggle() }>
                     <path d="M14.0929 1L1.84546 13L14.0929 25" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             </div>
