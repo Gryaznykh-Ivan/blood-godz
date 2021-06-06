@@ -57,9 +57,9 @@ export default function Home() {
                             <div className="ml-20 text-xs text-gray-400">
                                 <div className="">Server stats:</div>
                                 <div className="flex space-x-5 mt-1">
-                                    <SmallSwitcher type="regular" text="RUS" />
-                                    <SmallSwitcher type="positive" text="EU" />
-                                    <SmallSwitcher type="negative" text="US" />
+                                    <SmallSwitcher type="regular" text="RUS" checked={ true } />
+                                    <SmallSwitcher type="positive" text="EU" checked={ true } />
+                                    <SmallSwitcher type="negative" text="US" checked={ true } />
                                 </div>
                             </div>
                         </div>
