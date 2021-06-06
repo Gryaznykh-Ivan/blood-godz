@@ -14,7 +14,7 @@ export default function App() {
     return (
         <div className="relative font-sans flex flex-col min-h-screen bg-mainBlack overflow-hidden">
             <Header />
-            <div className="flex-grow container mx-auto">
+            <div className="flex-grow">
                 <Switch>
                     <Route exact path="/" component={Index} />
                     <Route path="/lobby" component={Lobby} />
