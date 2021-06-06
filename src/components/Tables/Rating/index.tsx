@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function RatingTable() {
+export default function index() {
     return (
         <div className="w-full bg-gray-900 rounded-2xl p-5">
             <div className="flex">
@@ -15,7 +15,7 @@ export default function RatingTable() {
                     <div className="w-full text-center">Процент хэдшотов</div>
                 </div>
             </div>
-            <div className="whitespace-nowrap font-bold space-y-2 h-80 overflow-y-auto scrollbar pr-2">
+            <div className="whitespace-nowrap font-bold space-y-2 h-80 overflow-y-auto scrollbar pr-2 text-white">
                 <div className="flex">
                     <div className="flex items-center w-10">1</div>
                     <div className="flex items-center justify-center flex-1 bg-mainBlack rounded-xl py-4">

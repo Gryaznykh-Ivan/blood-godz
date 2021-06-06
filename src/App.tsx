@@ -8,6 +8,7 @@ import Footer from './components/Footer/Footer'
 import Index from './pages/Home';
 import Premium from './pages/Premium';
 import Lobby from './pages/Lobby';
+import Group from './pages/Group';
 import Top from './pages/Top';
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
                     <Route path="/lobby" component={Lobby} />
                     <Route path="/top" component={Top} />
                     <Route path="/premium" component={Premium} />
+                    <Route path="/group" component={Group} />
                 </Switch>
             </div>
             <Footer />

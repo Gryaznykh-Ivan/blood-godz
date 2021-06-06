@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import RatingTable from '../components/RatingTable/RatingTable'
+import RatingTable from '../components/Tables/Rating'
 
 export default function Top() {
     return (
