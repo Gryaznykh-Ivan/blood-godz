@@ -1,32 +1,38 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: false, // or 'media' or 'class'
-  theme: {
-    screens: {
-      sm: '640px',
-      md: '768px',
-      lg: '1024px',
-      xl: '1170px',
+    purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+    darkMode: false, // or 'media' or 'class'
+    theme: {
+        screens: {
+            '2xl': { 'min': '1279px' },
+            'xl': { 'min': '1023px' },
+            'lg': { 'min': '767px' },
+            'md': { 'min': '639px' }
+        },
+        fontFamily: {
+            sans: ['Montserrat']
+        },
+        colors: {
+            ...colors,
+            mainBlack: "#141414",
+            secondaryBlack: "#0B0B0B",
+            gold: "#FFD260",
+            pink: "#FF395D",
+            mainBlue: "#44BCFF",
+            lightBlue: "#A4E7FF",
+        },
+        extend: {
+            borderWidth: {
+                '1px': '1px'
+            },
+            height: {
+                '1px': '1px'
+            }
+        },
     },
-    colors: {
-      ...colors,
-      mainBlack: "#141414",
-      secondaryBlack: "#0B0B0B",
-      gold: "#FFD260",
-      pink: "#FF395D",
-      turquoise: "#0088B8",
-      turquoiseLight: "#33FFDA",
+    variants: {
+        extend: {},
     },
-    extend: {
-      borderWidth: {
-        '1px': '1px'
-      },
-    },
-  },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
+    plugins: [],
 }
