@@ -16,11 +16,19 @@ module.exports = {
         colors: {
             ...colors,
             mainBlack: "#141414",
+            mainBlue: "#44BCFF",
             secondaryBlack: "#0B0B0B",
             gold: "#FFD260",
             pink: "#FF395D",
-            mainBlue: "#44BCFF",
             lightBlue: "#A4E7FF",
+            common: "#C2C2C2",
+            uncommon: "#6596E2",
+            rare: "#4C69CD",
+            mythical: "#8947FF",
+            legendary: "#D42BE6",
+            ancient: "#EB4B4B",
+            exceedinglyRare: "#CAAB05",
+            immortal: "#886A08",
         },
         extend: {
             borderWidth: {
