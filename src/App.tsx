@@ -13,6 +13,7 @@ import Skins from './pages/Skins';
 import Market from './pages/Market';
 import Top from './pages/Top';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import MiniGames from './pages/MiniGames';
 
 export default function App() {
     return (
@@ -27,6 +28,7 @@ export default function App() {
                     <Route path="/group" component={Group} />
                     <Route path="/skins" component={Skins} />
                     <Route path="/market" component={Market} />
+                    <Route path="/mini-games" component={MiniGames} />
                     <Route path="/privacy-policy" component={PrivacyPolicy} />
                 </Switch>
             </div>
