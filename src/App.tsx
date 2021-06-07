@@ -10,6 +10,7 @@ import Premium from './pages/Premium';
 import Lobby from './pages/Lobby';
 import Group from './pages/Group';
 import Skins from './pages/Skins';
+import Market from './pages/Market';
 import Top from './pages/Top';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 
@@ -25,6 +26,7 @@ export default function App() {
                     <Route path="/premium" component={Premium} />
                     <Route path="/group" component={Group} />
                     <Route path="/skins" component={Skins} />
+                    <Route path="/market" component={Market} />
                     <Route path="/privacy-policy" component={PrivacyPolicy} />
                 </Switch>
             </div>
