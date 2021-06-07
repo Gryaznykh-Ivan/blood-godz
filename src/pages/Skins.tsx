@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+
+import { ShowPopup } from '../utils/Popup'
 
 import ItemEdit from '../components/ItemEdit/ItemEdit'
 import ItemCard from '../components/ItemCard/ItemCard'
 import Select from '../components/Select/Select'
 
 export default function Skins() {
+    useEffect( () => {
+        ShowPopup(ItemEdit, {})
+        .then(a => {
+            console.log(a);
+        });
+
+    }, []);
+
     return (
         <div className="">
             <img className="absolute top-96 left-0" src="/static/images/skins/flashLight1.png" alt="" />
