@@ -110,50 +110,63 @@ export default function SideBar({ isOpened, isOpenedToggle }: PropsFromComponent
                         <img src="/static/images/icons/chat.png" alt="" />
                     </div>
                 </div>
-                <div className="space-y-4">
-                    <div className="flex space-x-5">
+                <div className="space-y-4 h-120 scrollbar-hidden overflow-x-hidden">
+                    <div className="flex">
                         <img src="/static/images/design/avatar.png" alt="" />
-                        <div className="">
+                        <div className="ml-5">
                             <div className="font-medium">James</div>
                             <div className="">Playing</div>
                         </div>
                     </div>
-                    <div className="flex space-x-5">
+                    <div className="flex">
                         <img src="/static/images/design/avatar.png" alt="" />
-                        <div className="">
+                        <div className="ml-5">
                             <div className="font-medium">Nabe</div>
                             <div className="">Playing</div>
                         </div>
                     </div>
-                    <div className="flex space-x-5">
+                    <div className="flex">
                         <img src="/static/images/design/avatar.png" alt="" />
-                        <div className="">
+                        <div className="ml-5">
                             <div className="font-medium">Ivan</div>
                             <div className="text-green-600">Online</div>
                         </div>
                     </div>
-                    <div className="flex space-x-5">
+                    <div className="flex">
                         <img src="/static/images/design/avatar.png" alt="" />
-                        <div className="">
+                        <div className="ml-5">
                             <div className="font-medium">Ivan</div>
                             <div className="text-green-600">Online</div>
                         </div>
                     </div>
-                    <div className="flex space-x-5">
+                    <div className="flex">
                         <img src="/static/images/design/avatar.png" alt="" />
-                        <div className="">
+                        <div className="ml-5">
                             <div className="font-medium">Ivan</div>
                             <div className="text-green-600">Online</div>
                         </div>
                     </div>
-                    <div className="flex space-x-5">
+                    <div className="flex">
                         <img src="/static/images/design/avatar.png" alt="" />
-                        <div className="">
+                        <div className="ml-5">
                             <div className="font-medium">Ivan</div>
                             <div className="text-green-600">Online</div>
                         </div>
                     </div>
-                    
+                    <div className="flex">
+                        <img src="/static/images/design/avatar.png" alt="" />
+                        <div className="ml-5">
+                            <div className="font-medium">Ivan</div>
+                            <div className="text-green-600">Online</div>
+                        </div>
+                    </div>
+                    <div className="flex">
+                        <img src="/static/images/design/avatar.png" alt="" />
+                        <div className="ml-5">
+                            <div className="font-medium">Ivan</div>
+                            <div className="text-green-600">Online</div>
+                        </div>
+                    </div>
                     
                 </div>
             </div>

@@ -35,7 +35,8 @@ module.exports = {
                 '1px': '1px'
             },
             height: {
-                '1px': '1px'
+                '1px': '1px',
+                '120': '30rem'
             }
         },
     },
