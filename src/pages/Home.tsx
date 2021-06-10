@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import SmallSwitcher from '../components/Switchers/Small'
+import NewsPreview from '../components/NewsCard/Preview'
 import NewsCard from '../components/NewsCard/NewsCard'
 
 export default function Home() {
@@ -19,8 +20,8 @@ export default function Home() {
                         <div className="relative h-96">
                             <div className="absolute h-full overflow-hidden">
                                 <div className="flex space-x-5 h-full" style={{ width: `${2000}px`, transform: `translateX(${0}px)` }}>
-                                    <NewsCard />
-                                    <NewsCard />
+                                    <NewsPreview />
+                                    <NewsPreview />
                                 </div>
                             </div>
                         </div>
@@ -49,20 +50,35 @@ export default function Home() {
                                 </Link>
                                 <Link to="#">
                                     <img src="/static/images/icons/vk.png" alt="" />
-                                </Link> 
+                                </Link>
                                 <Link to="#">
                                     <img src="/static/images/icons/discord.png" alt="" />
-                                </Link> 
+                                </Link>
                             </div>
                             <div className="ml-20 text-xs text-gray-400">
                                 <div className="">Server stats:</div>
                                 <div className="flex space-x-5 mt-1">
-                                    <SmallSwitcher type="regular" text="RUS" checked={ true } />
-                                    <SmallSwitcher type="positive" text="EU" checked={ true } />
-                                    <SmallSwitcher type="negative" text="US" checked={ true } />
+                                    <SmallSwitcher type="regular" text="RUS" checked={true} />
+                                    <SmallSwitcher type="positive" text="EU" checked={true} />
+                                    <SmallSwitcher type="negative" text="US" checked={true} />
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div className="my-20">
+                <img className="absolute top-96 right-0" src="/static/images/news/flashLight1.png" alt="" />
+                <div className="relative container m-auto text-white mt-20">
+                    <img className="absolute top-10 left-0" src="/static/images/news/news.png" alt="" />
+                    <div className="">
+                        <div className="text-4xl font-bold">#NEWS</div>
+                        <div className=""></div>
+                    </div>
+                    <div className="relative my-20 flex flex-col space-y-5">
+                        <NewsCard />
+                        <NewsCard />
+                        <NewsCard />
                     </div>
                 </div>
             </div>

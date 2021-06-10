@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 
-import Index from './pages/Home';
+import Home from './pages/Home';
 import Premium from './pages/Premium';
 import Lobby from './pages/Lobby';
 import Group from './pages/Group';
@@ -21,7 +21,7 @@ export default function App() {
             <Header />
             <div className="flex-grow">
                 <Switch>
-                    <Route exact path="/" component={Index} />
+                    <Route exact path="/" component={Home} />
                     <Route path="/lobby" component={Lobby} />
                     <Route path="/top" component={Top} />
                     <Route path="/premium" component={Premium} />
