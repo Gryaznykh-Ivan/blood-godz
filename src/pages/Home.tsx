@@ -70,9 +70,9 @@ export default function Home() {
             <div className="my-20">
                 <img className="absolute top-96 right-0" src="/static/images/news/flashLight1.png" alt="" />
                 <div className="relative container m-auto text-white mt-20">
-                    <img className="absolute top-10 left-0" src="/static/images/news/news.png" alt="" />
+                    <img className="absolute top-12 left-0" src="/static/images/news/news.png" alt="" />
                     <div className="">
-                        <div className="text-4xl font-bold">#NEWS</div>
+                        <div className="text-5xl font-bold">#NEWS</div>
                         <div className=""></div>
                     </div>
                     <div className="relative my-20 flex flex-col space-y-5">
