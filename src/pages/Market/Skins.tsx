@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 
-import ItemCard from '../../components/ItemCard/ItemCard'
+import ItemCard from '../../components/Cards/ItemCard/ItemCard'
 import Select from '../../components/Select/Select'
 
-export default function Market() {
+export default function Skins() {
 
     return (
         <div className="">

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import GameCard from '../../components/GameCard/GameCard'
+import GameCard from '../../components/Cards/GameCard/GameCard'
 
 export default function MiniGames() {
     return (

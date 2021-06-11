@@ -10,7 +10,8 @@ import Premium from './pages/Premium/Premium';
 import Lobby from './pages/Lobby/Lobby';
 import Group from './pages/Group/Group';
 import Skins from './pages/Skins/Skins';
-import Market from './pages/Market/Market';
+import MarketSkins from './pages/Market/Skins';
+import MarketHacks from './pages/Market/Hacks';
 import Top from './pages/Top/Top';
 import PrivacyPolicy from './pages/General/PrivacyPolicy';
 import MiniGames from './pages/MiniGames/MiniGames';
@@ -27,7 +28,8 @@ export default function App() {
                     <Route path="/premium" component={Premium} />
                     <Route path="/group" component={Group} />
                     <Route path="/skins" component={Skins} />
-                    <Route path="/market" component={Market} />
+                    <Route path="/market/skins" component={MarketSkins} />
+                    <Route path="/market/hacks" component={MarketHacks} />
                     <Route path="/mini-games" component={MiniGames} />
                     <Route path="/privacy-policy" component={PrivacyPolicy} />
                 </Switch>

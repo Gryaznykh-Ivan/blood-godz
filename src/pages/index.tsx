@@ -2,10 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import SmallSwitcher from '../components/Switchers/Small'
-import NewsPreview from '../components/NewsCard/Preview'
-import NewsCard from '../components/NewsCard/NewsCard'
+import NewsPreview from '../components/Cards/NewsCard/Preview'
+import NewsCard from '../components/Cards/NewsCard/NewsCard'
 
-export default function Home() {
+export default function index() {
     return (
         <div className="flex flex-col mt-20 text-white">
             <div className="absolute -top-64 -left-1/2">
