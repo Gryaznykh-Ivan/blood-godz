@@ -1,6 +1,6 @@
 import React from 'react'
 
-import GameHistory from '../components/Tables/GamesHistory'
+import GameHistory from '../../components/Tables/GamesHistory'
 
 export default function Group() {
     return (

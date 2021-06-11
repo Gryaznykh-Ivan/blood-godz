@@ -7,7 +7,7 @@ export default function Faq() {
             <div className="my-14 bg-blacky rounded-2xl">
                 <div className="pl-20 py-8 font-bold text-sm text-gray">Популярные вопросы</div>
                 <div className="px-5 pb-5">
-                    <div className="border-l-2 pl-1 border-pink cursor-pointer pl-10">
+                    <div className="border-l-2 border-pink cursor-pointer pl-10">
                         <div className="pl-4 rounded-2xl bg-gradient-to-r from-secondaryBlack to-mainBlack text-white py-3">Проблемы с аккаунтом</div>
                     </div>
                 </div>

@@ -5,15 +5,15 @@ import { Route, Switch } from 'react-router-dom';
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 
-import Home from './pages/Home';
-import Premium from './pages/Premium';
-import Lobby from './pages/Lobby';
-import Group from './pages/Group';
-import Skins from './pages/Skins';
-import Market from './pages/Market';
-import Top from './pages/Top';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import MiniGames from './pages/MiniGames';
+import Home from './pages';
+import Premium from './pages/Premium/Premium';
+import Lobby from './pages/Lobby/Lobby';
+import Group from './pages/Group/Group';
+import Skins from './pages/Skins/Skins';
+import Market from './pages/Market/Market';
+import Top from './pages/Top/Top';
+import PrivacyPolicy from './pages/General/PrivacyPolicy';
+import MiniGames from './pages/MiniGames/MiniGames';
 
 export default function App() {
     return (
