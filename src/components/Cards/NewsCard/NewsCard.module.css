@@ -4,6 +4,11 @@
     border-radius: 30px;
 }
 
+.preview {
+    min-width: 760px;
+    width: 760px;
+}
+
 .active {
     background: linear-gradient(121.18deg, #F3516E 6.51%, #A30A25 85.03%);
 }
