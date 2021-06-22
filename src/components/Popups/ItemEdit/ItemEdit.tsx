@@ -1,9 +1,9 @@
 import React from 'react'
-import { PopupResponse } from '../../utils/Popup'
+import { PopupResponse } from '../../../utils/Popup'
 
 import s from './ItemEdit.module.css'
 
-import ItemCard from '../Cards/ItemCard/ItemCard'
+import ItemCard from '../../Cards/ItemCard/ItemCard'
 
 
 interface Props {

@@ -1,6 +1,12 @@
 import React from 'react'
 
-export default function HackCard() {
+interface PropsFromComponent {
+    children?: React.ReactNode
+}
+
+type Props = PropsFromComponent;
+
+export default function HackCard({ children }: Props) {
     return (
         <div className="relative w-full cursor-pointer text-white">
             <div className="p-4 bg-gray-900 rounded-2xl flex flex-col">
@@ -14,6 +20,7 @@ export default function HackCard() {
                 <div className="text-center text-gray-500">Hack</div>
                 <div className="relative text-center"><span className="absolute line-through left-0 text-gray-500">500</span>250р.</div>
                 <div className="absolute top-3 right-2 px-2 bg-pink rounded-xl">-10%</div>
+                { children }
             </div>
         </div>
     )

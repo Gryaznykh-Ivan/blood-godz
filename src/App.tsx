@@ -12,6 +12,7 @@ import Group from './pages/Group/Group';
 import Skins from './pages/Skins/Skins';
 import MarketSkins from './pages/Market/Skins';
 import MarketHacks from './pages/Market/Hacks';
+import MarketHack from './pages/Market/Hack';
 import Top from './pages/Top/Top';
 import PrivacyPolicy from './pages/General/PrivacyPolicy';
 import MiniGames from './pages/MiniGames/MiniGames';
@@ -28,6 +29,7 @@ export default function App() {
                     <Route path="/premium" component={Premium} />
                     <Route path="/group" component={Group} />
                     <Route path="/skins" component={Skins} />
+                    <Route path="/market/hacks/:id" component={MarketHack} />
                     <Route path="/market/skins" component={MarketSkins} />
                     <Route path="/market/hacks" component={MarketHacks} />
                     <Route path="/mini-games" component={MiniGames} />

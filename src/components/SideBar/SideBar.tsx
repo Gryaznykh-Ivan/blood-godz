@@ -13,7 +13,7 @@ export default function SideBar({ isOpened, isOpenedToggle }: PropsFromComponent
 
     return (
         <div className="transition-all duration-700">
-        <div className={ `fixed lg:z-50 z-20 top-0 right-0 scrollbar-hidden overflow-x-hidden ${ isOpened ? 'lg:w-80 w-full' : 'w-20 hidden' } bg-black h-screen lg:flex flex-col py-16 px-4 bg-opacity-80 text-white` }>
+        <div className={ `fixed xl:z-50 z-20 top-0 right-0 scrollbar-hidden overflow-x-hidden ${ isOpened ? 'xl:w-80 w-full' : 'w-20 hidden' } bg-black h-screen xl:flex flex-col py-16 px-4 bg-opacity-80 text-white` }>
             <div className={ `flex flex-col flex-1 items-center ${ isAuth && 'hidden' }` }>
                 <img className="mb-2" src="/static/images/icons/persone.png" alt="" />
                 <div className="">Register</div>
