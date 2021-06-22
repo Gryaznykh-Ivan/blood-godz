@@ -9,7 +9,7 @@ export default function Top() {
             <div className="relative container m-auto text-white mt-20">
                 <img className="absolute -top-5 left-0" src="/static/images/top/playerTop.png" alt="" />
                 <div className="text-4xl font-bold">#ТОП ИГРОКОВ</div>
-                <div className="relative flex mt-12">
+                <div className="relative flex mt-12 whitespace-nowrap">
                     <div className="flex space-x-12 text-xl">
                         <NavLink to="/top/1vs1" activeClassName="text-pink font-bold border-b-2 border-opacity-20 border-pink">1 vs 1</NavLink>
                         <NavLink to="/top/2vs2" activeClassName="text-pink font-bold border-b-2 border-opacity-20 border-pink">2 vs 2</NavLink>
