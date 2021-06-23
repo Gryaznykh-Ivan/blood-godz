@@ -1,0 +1,9 @@
+.ConfirmPurchase {
+    width: 100%;
+    max-width: 685px;
+    padding: 20px 15px 20px 15px;
+    background: linear-gradient(92.17deg, #1A1A1A 33.78%, #FF334D 113.45%);
+    box-shadow: 5px 9px 8px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    border-radius: 24px;
+}
