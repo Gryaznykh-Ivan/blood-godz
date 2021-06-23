@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Premium() {
     return (
-        <>
+        <div className="container m-auto pt-20">
             <div className="font-bold text-4xl text-yellow-400">#BloodGodz premium</div>
             
             <div className="px-24">
@@ -115,6 +115,6 @@ export default function Premium() {
 
             </div>
 
-        </>
+        </div>
     );
 };
