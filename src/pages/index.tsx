@@ -1,7 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+
 import SmallSwitcher from '../components/Switchers/Small'
+import BigSwitcher from '../components/Switchers/Big'
 import NewsCard from '../components/Cards/NewsCard/NewsCard'
 import NewsPreview from '../components/Cards/NewsCard/Preview'
 import NewsSlider from '../components/NewsSlider/NewsSlider'
@@ -55,7 +57,14 @@ export default function index() {
                 <div className="relative container m-auto text-white mt-20">
                     <img className="absolute top-12 left-0" src="/static/images/news/news.png" alt="" />
                     <div className="">
-                        <div className="text-5xl font-bold">#NEWS</div>
+                        <div className="flex xl:flex-row flex-col items-center">
+                            <div className="text-5xl font-bold mb-5 xl:mb-0 xl:mr-20 mr-0">#NEWS</div>
+                            <div className="flex-1 grid lg:grid-cols-3 grid-flow-row gap-4">
+                                <BigSwitcher type="positive" text="Russian server" ping={ 20 } checked={true} />
+                                <BigSwitcher type="negative" text="French server" ping={ 60 } checked={true} />
+                                <BigSwitcher type="regular" text="Baly server" ping={ 22 } checked={false} />
+                            </div>
+                        </div>
                         <div className=""></div>
                     </div>
                     <div className="relative my-20 flex flex-col space-y-5">
