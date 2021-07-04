@@ -18,6 +18,8 @@ import PrivacyPolicy from './pages/General/PrivacyPolicy';
 import MiniGames from './pages/MiniGames/MiniGames';
 
 
+
+
 export default function App() {
     return (
         <div className="relative font-sans flex flex-col min-h-screen bg-mainBlack overflow-hidden">
