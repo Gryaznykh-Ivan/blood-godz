@@ -20,7 +20,7 @@ module.exports = {
             secondaryBlack: "#0B0B0B",
             gold: "#FFD260",
             pink: "#FF395D",
-            lightBlue: "#A4E7FF",
+            sky: "#A4E7FF",
             common: "#C2C2C2",
             uncommon: "#6596E2",
             rare: "#4C69CD",
