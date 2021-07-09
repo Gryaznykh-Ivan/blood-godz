@@ -17,6 +17,7 @@ import Top from './pages/Top/Top';
 import PrivacyPolicy from './pages/General/PrivacyPolicy';
 import MiniGames from './pages/MiniGames/MiniGames';
 import Support from './pages/Support/Support';
+import Tournament from './pages/Tournament/Tournament';
 
 export default function App() {
     return (
@@ -35,6 +36,7 @@ export default function App() {
                     <Route path="/market/hacks" component={MarketHacks} />
                     <Route path="/mini-games" component={MiniGames} />
                     <Route path="/support" component={Support} />
+                    <Route path="/tournament" component={Tournament} />
                     <Route path="/privacy-policy" component={PrivacyPolicy} />
                 </Switch>
             </div>
