@@ -29,6 +29,8 @@ module.exports = {
             ancient: "#EB4B4B",
             exceedinglyRare: "#CAAB05",
             immortal: "#886A08",
+            purpur: "#19504C",
+            purpirLight: "#1CA195"
         },
         extend: {
             borderWidth: {
