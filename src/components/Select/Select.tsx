@@ -34,7 +34,7 @@ const Select = ({ customColor, type }: Props) => {
     };
 
     return (
-        <div onBlur={ onBlurEvent } tabIndex={ 2 }>
+        <div ref={ selectRef } onBlur={ onBlurEvent } tabIndex={ 3 }>
             <div className={ `relative w-full rounded py-2 px-4 ${ customColor ?? "bg-gray-900" } `}>
 
                 <div className="flex items-center justify-between cursor-pointer space-x-2.5" onClick={ () => onClickEvent() }>
@@ -66,7 +66,6 @@ const Select = ({ customColor, type }: Props) => {
                                     </div>
                                 </div>
                             );
-
                             case 'mode': return (
                                 <div className="space-y-2.5 text-center">
                                     <div className="cursor-pointer" onClick={() => onSelectEvent("3 vs 3")}>
