@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 
 import Search from '../../components/Lobby/Search';
-import Select from '../../components/Select/Select';
+import Select from '../../components/Select/Default';
+import SelectS from '../../components/Select/Server';
 import Chat from '../../components/Chat/Chat';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import BigSwitcher from '../../components/Switchers/Big';
@@ -19,7 +20,7 @@ export default function Lobby() {
         {name: 'NickName', msg: 'Приятно смотреть накоец, да)', imageUrl: "/static/images/design/avatar2.png", alien: true},
         {name: 'Nolan', msg: 'окей', imageUrl: "/static/images/design/avatar.png", alien: false},
     ];
-
+    
     return (
         <>
             <img className="absolute top-0 left-0" src="/static/images/lobby/glowOne.png" alt="" />
@@ -40,17 +41,17 @@ export default function Lobby() {
                         <div className="flex flex-col space-y-5 lg:flex-row lg:space-y-0 lg:space-x-10">
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Выбрать регион сервера:</div>
-                                <Select type="server"/>
+                                <SelectS />
                             </div>
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Выбрать режим игры:</div>
-                                <Select type="mode"/>
+                                <Select />
                             </div>
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Доступ:</div>
-                                <Select type="access"/>
+                                <Select />
                             </div>
                         </div>
                     </div>
@@ -70,8 +71,8 @@ export default function Lobby() {
                                 </button>
                             }
                             <div className="mt-4">
-                                <div className="flex items-center space-x-2.5">
-                                    <CheckBox checked={ checked } onClick={ () => setChecked(prev => !prev) } />
+                                <div className="flex items-center space-x-2.5 cursor-pointer" onClick={ () => setChecked(prev => !prev) }>
+                                    <CheckBox checked={ checked } />
                                     <div className="text-gray-400 text-sm">Автоматическое принятие игры</div>
                                 </div>
                             </div>

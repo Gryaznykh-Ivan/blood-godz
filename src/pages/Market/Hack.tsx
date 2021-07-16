@@ -36,7 +36,7 @@ export default function Hack() {
                         </div>
                         <div className="w-full py-2 mt-2 flex justify-center hover:bg-gray-800 rounded-md cursor-pointer" onClick={ () => setIsOpened(prev => !prev) }>
                             <svg className={ `${isOpened && "transform rotate-180"}` } width="19" height="11" viewBox="0 0 19 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1L9.5 10L18 1" stroke="#969696" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M1 1L9.5 10L18 1" stroke="#969696" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </div>
                     </div>

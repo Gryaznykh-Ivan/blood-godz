@@ -11,7 +11,7 @@ interface PropsFromComponent {
 
 export default function index({ type, text, ping, checked }: PropsFromComponent) {
     return (
-        <div className={ `relative w-full rounded-full flex items-center pl-6 pr-12 py-1 whitespace-nowrap text-white ${ checked ? Types[type].body : "bg-gray-600" }` }>
+        <div className={ `relative w-full rounded-full flex items-center pl-6 pr-12 py-1 whitespace-nowrap text-white ${ checked ? Types[type].body : "bg-gray-500" }` }>
             
             <div className="">
                 <div className="text-gray-100">{ text }</div>

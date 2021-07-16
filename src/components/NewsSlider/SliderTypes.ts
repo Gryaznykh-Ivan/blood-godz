@@ -1,6 +1,7 @@
 export const INIT = 'INIT'
 export const NEXT_SLIDE = 'NEXT_SLIDE'
 export const PREV_SLIDE = 'PREV_SLIDE'
+export const MOVE_TO_SLIDE = 'MOVE_TO_SLIDE'
 
 interface Slider {
     width: number,
@@ -39,4 +40,9 @@ interface PrevSlideAction {
     type: typeof PREV_SLIDE
 }
 
-export type SliderActions = InitAction | NextSlideAction | PrevSlideAction;
+interface MoveToSlideAction {
+    type: typeof MOVE_TO_SLIDE,
+    slide: number
+}
+
+export type SliderActions = InitAction | NextSlideAction | PrevSlideAction | MoveToSlideAction;
