@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 html, body, #root {
   height: 100%;
 }
@@ -17,7 +16,7 @@ html, body, #root {
 
 .scrollbar::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color: #969696; 
+  background-color: #969696;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
@@ -25,9 +24,10 @@ html, body, #root {
   background-color: #FF395D;
 }
 
-
 .unselectable {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }

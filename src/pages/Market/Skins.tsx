@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import ItemCard from '../../components/Cards/ItemCard/ItemCard'
-import Select from '../../components/Select/Default';
+import Select from '../../components/Select/Select'
 
 export default function Skins() {
 

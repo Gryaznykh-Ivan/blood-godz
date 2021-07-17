@@ -4,7 +4,7 @@ import { ShowPopup } from '../../utils/Popup'
 
 import ItemEdit from '../../components/Popups/ItemEdit/ItemEdit'
 import ItemCard from '../../components/Cards/ItemCard/ItemCard'
-import Select from '../../components/Select/Default'
+import Select from '../../components/Select/Select'
 
 export default function Skins() {
     useEffect( () => {

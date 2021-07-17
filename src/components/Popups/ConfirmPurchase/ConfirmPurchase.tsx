@@ -41,8 +41,8 @@ const ConfirmPurchase = ({ resolve }: Props) => {
                             </svg>
                         </div>
                     </div>
-                    <div className="flex " onClick={ () => setChecked(prev => !prev) }>
-                        <CheckBox checked={ checked }/>
+                    <div className="flex ">
+                        <CheckBox checked={ checked } onClick={ () => setChecked(prev => !prev) }/>
                         <div className="ml-2">Принять пользовательское соглашение</div>
                     </div>
                 </div>

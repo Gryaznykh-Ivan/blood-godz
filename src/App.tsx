@@ -14,6 +14,14 @@ import MarketHack from './pages/Market/Hack';
 import Top from './pages/Top/Top';
 import PrivacyPolicy from './pages/General/PrivacyPolicy';
 import MiniGames from './pages/MiniGames/MiniGames';
+
+import Premium from './pages/Premium/Premium';
+import Profile from './pages/Profile/Profile';
+import Setting from './pages/Setting/Setting';
+import Faq from './pages/Faq/Faq';
+import Tournament from './pages/Tournament/Tournament';
+import Contacts from './pages/Contacts/Contacts';
+import Support from './pages/Support/Support';
 import Lobby from './pages/Lobby/Lobby';
 
 export default function App() {
@@ -32,7 +40,14 @@ export default function App() {
                     <Route path="/mini-games" component={MiniGames} />
                     <Route path="/privacy-policy" component={PrivacyPolicy} />
 
-                    <Route path="/lobby" component={Lobby}/>
+                    <Route path="/premium" component={Premium} />
+                    <Route path="/profile" component={Profile} />
+                    <Route path="/setting" component={Setting} />
+                    <Route path="/faq" component={Faq} />
+                    <Route path="/tournament" component={Tournament} />
+                    <Route path="/contacts" component={Contacts} />
+                    <Route path="/support" component={Support} />
+                    <Route path="/lobby" component={Lobby} />
                 </Switch>
             </div>
             <Footer />
