@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { SliderActions, SliderState } from "./SliderTypes";
 import { INIT, PREV_SLIDE, NEXT_SLIDE, DRAG, RESIZE, MOVE_TO_NEAREST, ANIMATION } from "./SliderTypes";
+=======
+import { MOVE_TO_SLIDE, SliderActions, SliderState } from "./SliderTypes";
+import { INIT, PREV_SLIDE, NEXT_SLIDE } from "./SliderTypes";
+>>>>>>> 800351a2658d60104c8914b02f29fc71fecd8425
 
 const reducer = (state: SliderState, action: SliderActions) => {
 
@@ -7,6 +12,7 @@ const reducer = (state: SliderState, action: SliderActions) => {
     switch (action.type) {
         case INIT:
             return {
+<<<<<<< HEAD
                 ...state,
                 slider: {
                     ...state.slider,
@@ -55,6 +61,12 @@ const reducer = (state: SliderState, action: SliderActions) => {
                 navigation: {
                     ...state.navigation,
                     translateX: ((state.navigation.scrollWidth - state.navigation.thumbWidth) / (state.slider.count - 1)) * currentSlide
+=======
+                ...state,
+                slider: {
+                    ...state.slider,
+                    ...action.slider
+>>>>>>> 800351a2658d60104c8914b02f29fc71fecd8425
                 }
             }
         case NEXT_SLIDE:
@@ -87,11 +99,27 @@ const reducer = (state: SliderState, action: SliderActions) => {
                     translateX: ((state.navigation.scrollWidth - state.navigation.thumbWidth) / (state.slider.count - 1)) * (state.slider.activeSlide - 1)
                 }
             }
+<<<<<<< HEAD
             case ANIMATION:
                 return {
                     ...state,
                     animation: action.animation ?? true
                 }
+=======
+        case MOVE_TO_SLIDE:
+            return {
+                ...state,
+                slider: {
+                    ...state.slider,
+                    activeSlide: action.slide,
+                    translateX: (action.slide * state.slider.slideWidth + (action.slide === 0 ? 0 : action.slide - 1) * state.slider.offset) * -1
+                },
+                navigation: {
+                    ...state.navigation,
+                    marginLeft: (100 / (state.slider.count - 1)) * (action.slide)
+                }
+            }
+>>>>>>> 800351a2658d60104c8914b02f29fc71fecd8425
         default:
             throw new Error();
     }

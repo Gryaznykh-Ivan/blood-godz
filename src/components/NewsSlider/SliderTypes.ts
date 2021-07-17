@@ -3,8 +3,12 @@ export const RESIZE = 'RESIZE'
 export const DRAG = 'DRAG'
 export const NEXT_SLIDE = 'NEXT_SLIDE'
 export const PREV_SLIDE = 'PREV_SLIDE'
+<<<<<<< HEAD
 export const MOVE_TO_NEAREST = 'MOVE_TO_NEAREST'
 export const ANIMATION = 'ANIMATION'
+=======
+export const MOVE_TO_SLIDE = 'MOVE_TO_SLIDE'
+>>>>>>> 800351a2658d60104c8914b02f29fc71fecd8425
 
 interface Slider {
     width: number,
@@ -57,6 +61,7 @@ interface PrevSlideAction {
     type: typeof PREV_SLIDE
 }
 
+<<<<<<< HEAD
 interface MoveToNearestAction {
     type: typeof MOVE_TO_NEAREST
 }
@@ -67,3 +72,11 @@ interface AnimationAction {
 }
 
 export type SliderActions = InitAction | ResizeAction | DragAction | NextSlideAction | PrevSlideAction | MoveToNearestAction | AnimationAction;
+=======
+interface MoveToSlideAction {
+    type: typeof MOVE_TO_SLIDE,
+    slide: number
+}
+
+export type SliderActions = InitAction | NextSlideAction | PrevSlideAction | MoveToSlideAction;
+>>>>>>> 800351a2658d60104c8914b02f29fc71fecd8425

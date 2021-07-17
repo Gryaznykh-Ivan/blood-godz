@@ -1,6 +1,6 @@
 import React from 'react'
 import HackCard from '../../components/Cards/HackCard/HackCard'
-import Select from '../../components/Select/Select'
+import Select from '../../components/Select/Default';
 
 export default function Hacks() {
     return (

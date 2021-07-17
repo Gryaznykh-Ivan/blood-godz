@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import Textarea from 'react-textarea-autosize';
 
 interface Message {
@@ -15,7 +15,7 @@ interface PropsFromComponent {
 export default function Chat({ data }: PropsFromComponent) {
     return (
         <>
-            <div className="w-full bg-black bg-opacity-50 rounded-2xl p-4">
+            <div className="w-full bg-black bg-opacity-50 rounded-2xl px-4 pt-4">
                 <div className="whitespace-nowrap space-y-2.5 h-96 overflow-y-auto scrollbar pr-2.5">
                     {
                         data.map((item) => <div className={`flex ${ !item.alien ? 'space-x-5' : 'flex-row-reverse'}`}>
