@@ -1,15 +1,19 @@
 import React, { useRef, useEffect, useReducer, ReactNode } from 'react'
+import useDraggable from '../../hooks/useDraggable';
+import useResizeObserver from '../../hooks/useResizeObserver';
 import reducer from './SliderState'
-import { INIT, NEXT_SLIDE, PREV_SLIDE } from './SliderTypes';
+import { DRAG, INIT, NEXT_SLIDE, PREV_SLIDE, RESIZE, MOVE_TO_NEAREST, ANIMATION } from './SliderTypes';
 
-interface PropsFromComponent
-{
+interface PropsFromComponent {
     children?: ReactNode
 }
 
 const NewsSlider = ({ children }: PropsFromComponent) => {
     const sliderContainer = useRef<HTMLDivElement>(null);
-    const [{ slider, navigation }, dispatch] = useReducer(reducer, {
+    const navigationScroll = useRef<HTMLDivElement>(null);
+    const scrollThumb = useRef<HTMLDivElement>(null);
+
+    const [{ slider, navigation, animation }, dispatch] = useReducer(reducer, {
         slider: {
             width: 0,
             offset: 20,
@@ -19,12 +23,35 @@ const NewsSlider = ({ children }: PropsFromComponent) => {
             activeSlide: 0,
         },
         navigation: {
-            marginLeft: 0,
+            translateX: 0,
             scrollWidth: 0,
             thumbWidth: 40
-        }
+        },
+        animation: false
     });
 
+    useDraggable(scrollThumb, DragThumbEvent, ReleaseThumbEvent);
+    useResizeObserver(navigationScroll, CatchResizeEvent);
+
+    function CatchResizeEvent(size: DOMRect) {
+        dispatch({
+            type: RESIZE,
+            scrollWidth: size.width
+        })
+    }
+
+    function DragThumbEvent(e: MouseEvent) {
+        dispatch({
+            type: DRAG,
+            movementX: e.movementX
+        })
+    }
+
+    function ReleaseThumbEvent() {
+        animate(() => {
+            dispatch({ type: MOVE_TO_NEAREST })
+        });
+    }
 
     useEffect(() => {
         const NewsPreviewCount = sliderContainer.current?.children.length;
@@ -34,7 +61,7 @@ const NewsSlider = ({ children }: PropsFromComponent) => {
             dispatch({
                 type: INIT,
                 slider: {
-                    width: NewsPreviewWidth * NewsPreviewCount,
+                    width: NewsPreviewWidth * NewsPreviewCount + slider.offset * (NewsPreviewCount - 1),
                     slideWidth: NewsPreviewWidth,
                     count: NewsPreviewCount
                 }
@@ -43,31 +70,55 @@ const NewsSlider = ({ children }: PropsFromComponent) => {
 
     }, []);
 
+    const animate = (cb: () => void) => {
+        dispatch({ type: ANIMATION, animation: true })
+        cb();
+        setTimeout(() => { dispatch({ type: ANIMATION, animation: false }) }, 500);
+    }
+
+    const onNextSlideEvent = () => {
+        if (!animation) {
+            animate(() => {
+                dispatch({ type: NEXT_SLIDE })
+            });
+        }
+    }
+
+    const onPrevSlideEvent = () => {
+        if (!animation) {
+            animate(() => {
+                dispatch({ type: PREV_SLIDE })
+            });
+        }
+    }
+
+
     return (
         <>
             <div className="relative h-96">
                 <div className="absolute h-full overflow-hidden">
-                    <div 
-                        className="transition-transform duration-700 flex space-x-5 h-full"
+                    <div
+                        className={`flex space-x-5 h-full ${animation && "transition-transform duration-500"}`}
                         style={{ width: `${slider.width}px`, transform: `translateX(${slider.translateX}px)` }}
                         ref={sliderContainer}
                     >
-                        { children }
+                        {children}
                     </div>
                 </div>
             </div>
-            <div className="mt-8 w-full flex">
+            <div className="mt-8 w-full flex unselectable">
                 <div className="flex items-center w-full">
-                    <div className="transform rotate-180 p-3 cursor-pointer" onClick={() => dispatch({ type: PREV_SLIDE })}>
+                    <div className="transform rotate-180 p-3 cursor-pointer" onClick={() => onPrevSlideEvent()}>
                         <img src="/static/images/icons/arrow.png" alt="" />
                     </div>
-                    <div className="flex-1 bg-gray-400 h-1px">
-                        <div 
-                            className="transition-all duration-700 rounded bg-pink w-10 h-2 transform -translate-y-1/2" 
-                            style={ { marginLeft: `calc(${ navigation.marginLeft }% - ${ navigation.thumbWidth / 2 }px ${ slider.activeSlide == 0 ? `+ ${ navigation.thumbWidth / 2 }px` : slider.activeSlide == slider.count - 1 ? `- ${ navigation.thumbWidth / 2 }px` : '' })` } }
+                    <div className=" relative flex-1 bg-gray-400 h-1px" ref={navigationScroll}>
+                        <div
+                            className={`absolute rounded bg-pink w-10 h-2 cursor-pointer ${animation && "transition-transform duration-500"}`}
+                            style={{ transform: `translate(${navigation.translateX}px, -50%)` }}
+                            ref={scrollThumb}
                         ></div>
                     </div>
-                    <div className="p-3 cursor-pointer" onClick={() => dispatch({ type: NEXT_SLIDE })}>
+                    <div className="p-3 cursor-pointer" onClick={() => onNextSlideEvent()}>
                         <img src="/static/images/icons/arrow.png" alt="" />
                     </div>
                 </div>

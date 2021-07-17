@@ -1,6 +1,10 @@
 export const INIT = 'INIT'
+export const RESIZE = 'RESIZE'
+export const DRAG = 'DRAG'
 export const NEXT_SLIDE = 'NEXT_SLIDE'
 export const PREV_SLIDE = 'PREV_SLIDE'
+export const MOVE_TO_NEAREST = 'MOVE_TO_NEAREST'
+export const ANIMATION = 'ANIMATION'
 
 interface Slider {
     width: number,
@@ -13,13 +17,14 @@ interface Slider {
 
 interface Navigation {
     scrollWidth: number,
-    marginLeft: number,
+    translateX: number,
     thumbWidth: number
 }
 
 export interface SliderState {
     slider: Slider,
-    navigation: Navigation
+    navigation: Navigation,
+    animation: boolean
 }
 
 interface InitAction {
@@ -28,7 +33,20 @@ interface InitAction {
         width: number,
         slideWidth: number,
         count: number
+    },
+    navigation?: {
+        scrollWidth: number
     }
+}
+
+interface ResizeAction {
+    type: typeof RESIZE,
+    scrollWidth: number
+}
+
+interface DragAction {
+    type: typeof DRAG,
+    movementX: number
 }
 
 interface NextSlideAction {
@@ -39,4 +57,13 @@ interface PrevSlideAction {
     type: typeof PREV_SLIDE
 }
 
-export type SliderActions = InitAction | NextSlideAction | PrevSlideAction;
+interface MoveToNearestAction {
+    type: typeof MOVE_TO_NEAREST
+}
+
+interface AnimationAction {
+    type: typeof ANIMATION,
+    animation?: boolean
+}
+
+export type SliderActions = InitAction | ResizeAction | DragAction | NextSlideAction | PrevSlideAction | MoveToNearestAction | AnimationAction;
