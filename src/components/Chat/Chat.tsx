@@ -15,12 +15,12 @@ interface PropsFromComponent {
 export default function Chat({ data }: PropsFromComponent) {
     return (
         <>
-            <div className="w-full bg-black bg-opacity-50 rounded-2xl p-4">
-                <div className="whitespace-nowrap space-y-2.5 h-96 overflow-y-auto scrollbar pr-2.5">
+            <div className="bg-black bg-opacity-50 rounded-2xl p-4 text-white">
+                <div className="space-y-2.5 h-96 overflow-y-auto scrollbar pr-4">
                     {
-                        data.map((item) => <div className={`flex ${ !item.alien ? 'space-x-5' : 'flex-row-reverse'}`}>
+                        data.map((item) => <div className={`flex ${ !item.alien ? 'space-x-5 w-full' : 'flex-row-reverse'}`}>
                             <img className="w-16 h-16 rounded-2xl" src={item.imageUrl} alt="" />
-                            <div className={` ${item.alien ? 'mr-5 bg-gradient-to-r from-gray-900 to-blue-500' : 'bg-gray-900'} w-full rounded-2xl px-5 py-1 font-medium`}>
+                            <div className={` ${item.alien ? 'mr-5 bg-gradient-to-r from-gray-900 to-blue-500' : ' bg-gray-900'} w-full rounded-2xl px-5 py-1 font-medium`}>
                                 <div className="text-gray-400">{item.name}</div>
                                 <div className="text-sm">{item.msg}</div>
                             </div>
