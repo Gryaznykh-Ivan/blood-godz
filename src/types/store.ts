@@ -1,6 +1,3 @@
-
-
-
 export interface AuthState {
     isLoading: boolean,
     isAuth: boolean,

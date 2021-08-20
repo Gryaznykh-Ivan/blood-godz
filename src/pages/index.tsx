@@ -7,8 +7,13 @@ import BigSwitcher from '../components/Switchers/Big'
 import NewsCard from '../components/Cards/NewsCard/NewsCard'
 import NewsPreview from '../components/Cards/NewsCard/Preview'
 import NewsSlider from '../components/NewsSlider/NewsSlider'
+import {useSelector} from "react-redux";
+import {AppState} from "../store";
+import locale from "../localization";
 
-export default function index() {
+const Index = () => {
+    const translit = useSelector((state:AppState) => state.localization.locale);
+
     return (
         <div className="flex flex-col mt-20 text-white">
             <div className="absolute -top-64 -left-1/2">
@@ -17,7 +22,7 @@ export default function index() {
             <div className="container m-auto relative z-10">
                 <div className="flex xl:flex-row flex-col xl:items-start items-center">
                     <div className="xl:mr-32 xl:mt-64 xl:mb-0 mb-20">
-                        <button className="text-lg font-bold text-white bg-pink rounded-xl px-8 py-2 focus:outline-none">TIME TO PLAY</button>
+                        <button className="text-lg font-bold text-white bg-pink rounded-xl px-8 py-2 focus:outline-none">{locale.time_to_play}</button>
                     </div>
                     <div className="flex-1">
                         <NewsSlider>
@@ -77,3 +82,5 @@ export default function index() {
         </div>
     )
 }
+
+export default Index;
