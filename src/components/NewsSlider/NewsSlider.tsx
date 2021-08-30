@@ -55,20 +55,22 @@ const NewsSlider = ({ children }: PropsFromComponent) => {
 
     useEffect(() => {
         const NewsPreviewCount = sliderContainer.current?.children.length;
-        const NewsPreviewWidth = sliderContainer.current?.children[0].clientWidth;
 
-        if (NewsPreviewCount && NewsPreviewWidth) {
-            dispatch({
-                type: INIT,
-                slider: {
-                    width: NewsPreviewWidth * NewsPreviewCount + slider.offset * (NewsPreviewCount - 1),
-                    slideWidth: NewsPreviewWidth,
-                    count: NewsPreviewCount
-                }
-            });
+
+        if (NewsPreviewCount) {
+            const NewsPreviewWidth = sliderContainer.current?.children[0].clientWidth;
+            if (NewsPreviewWidth)
+                dispatch({
+                    type: INIT,
+                    slider: {
+                        width: NewsPreviewWidth * NewsPreviewCount + slider.offset * (NewsPreviewCount - 1),
+                        slideWidth: NewsPreviewWidth,
+                        count: NewsPreviewCount
+                    }
+                });
         }
 
-    }, []);
+    });
 
     const animate = (cb: () => void) => {
         dispatch({ type: ANIMATION, animation: true })

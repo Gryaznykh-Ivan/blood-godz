@@ -3,6 +3,7 @@ export const LOGIN_AUTH = "LOGIN_AUTH"
 export const FAILED_AUTH = "FAILED_AUTH"
 export const LOGOUT_AUTH = "LOGOUT_AUTH"
 export const CHANGE_LOCALE = "CHANGE_LOCALE";
+export const ADD_NEWS = "ADD_NEWS";
 
 interface LoadingAuthAction {
     type: typeof LOADING_AUTH,
@@ -31,6 +32,23 @@ interface ChangeLocalisation {
     locale: Locales
 }
 
+interface AddNews {
+    type: typeof ADD_NEWS,
+    news: News
+}
+
+export interface News {
+    author: string,
+    commentable: boolean,
+    comments: object,
+    date: bigint,
+    image: string,
+    likes: bigint,
+    message: string,
+    title: string
+}
+
 export type Locales = "rus" | "eng"
+export type NewsActionTypes = AddNews
 export type LocalizationActionTypes = ChangeLocalisation
 export type AuthActionTypes = LoadingAuthAction | LoginAuthAction | FailedAuthAction | LogoutAuthAction

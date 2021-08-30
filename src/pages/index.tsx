@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 
 
@@ -8,11 +8,17 @@ import NewsCard from '../components/Cards/NewsCard/NewsCard'
 import NewsPreview from '../components/Cards/NewsCard/Preview'
 import NewsSlider from '../components/NewsSlider/NewsSlider'
 import {useSelector} from "react-redux";
-import {AppState} from "../store";
+import store, {AppState} from "../store";
 import locale from "../localization";
+import {getLastNews} from "../actions/news";
 
 const Index = () => {
-    const translit = useSelector((state:AppState) => state.localization.locale);
+    const [news, setNews] = useState([]);
+    useSelector((state:AppState) => state.localization.locale);
+    useSelector((state:AppState) => state.news.news);
+    useEffect(() => {
+        getLastNews().then(r => setNews(prevState => store.getState().news.news));
+    }, []);
 
     return (
         <div className="flex flex-col mt-20 text-white">
@@ -26,12 +32,7 @@ const Index = () => {
                     </div>
                     <div className="flex-1">
                         <NewsSlider>
-                            <NewsPreview />
-                            <NewsPreview />
-                            <NewsPreview />
-                            <NewsPreview />
-                            <NewsPreview />
-                            <NewsPreview />
+                            { news.map( (value: any, i: any) => <NewsPreview key={i} props={value}/> )}
                         </NewsSlider>
                         <div className="flex h-20 mt-20">
                             <div className="flex space-x-20">
