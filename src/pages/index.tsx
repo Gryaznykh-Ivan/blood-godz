@@ -74,9 +74,7 @@ const Index = () => {
                         <div className=""></div>
                     </div>
                     <div className="relative my-20 flex flex-col space-y-5">
-                        <NewsCard />
-                        <NewsCard />
-                        <NewsCard />
+                        { news.map( (value: any, i: any) => <NewsCard key={i} props={value}/> )}
                     </div>
                 </div>
             </div>

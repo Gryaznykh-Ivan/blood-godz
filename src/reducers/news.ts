@@ -1,4 +1,4 @@
-import { ADD_NEWS, News, NewsActionTypes } from '../types/actions'
+import { GET_NEWS, News, NewsActionTypes } from '../types/actions'
 
 interface initialStateInterface{
     news: Array<News>
@@ -10,7 +10,7 @@ const initialState : initialStateInterface = {
 
 export default function NewsReducer(state = initialState, action: NewsActionTypes): any {
     switch (action.type) {
-        case ADD_NEWS:
+        case GET_NEWS:
             return { ...state, news: action.news };
         default:
             return { ...state };

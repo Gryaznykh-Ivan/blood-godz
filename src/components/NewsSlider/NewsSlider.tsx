@@ -3,6 +3,8 @@ import useDraggable from '../../hooks/useDraggable';
 import useResizeObserver from '../../hooks/useResizeObserver';
 import reducer from './SliderState'
 import { DRAG, INIT, NEXT_SLIDE, PREV_SLIDE, RESIZE, MOVE_TO_NEAREST, ANIMATION } from './SliderTypes';
+import store, {AppState} from "../../store";
+import {useSelector} from "react-redux";
 
 interface PropsFromComponent {
     children?: ReactNode
@@ -12,6 +14,7 @@ const NewsSlider = ({ children }: PropsFromComponent) => {
     const sliderContainer = useRef<HTMLDivElement>(null);
     const navigationScroll = useRef<HTMLDivElement>(null);
     const scrollThumb = useRef<HTMLDivElement>(null);
+    const selector = useSelector((state:AppState) => state.news.news);
 
     const [{ slider, navigation, animation }, dispatch] = useReducer(reducer, {
         slider: {
@@ -54,11 +57,11 @@ const NewsSlider = ({ children }: PropsFromComponent) => {
     }
 
     useEffect(() => {
-        const NewsPreviewCount = sliderContainer.current?.children.length;
+        const NewsPreviewCount = store.getState().news.news.length;
 
 
         if (NewsPreviewCount) {
-            const NewsPreviewWidth = sliderContainer.current?.children[0].clientWidth;
+            const NewsPreviewWidth = 760;
             if (NewsPreviewWidth)
                 dispatch({
                     type: INIT,
@@ -70,7 +73,7 @@ const NewsSlider = ({ children }: PropsFromComponent) => {
                 });
         }
 
-    });
+    }, [selector]);
 
     const animate = (cb: () => void) => {
         dispatch({ type: ANIMATION, animation: true })

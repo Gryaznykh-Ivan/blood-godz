@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import s from './NewsCard.module.css'
 import {News} from "../../../types/actions";
+import moment from "moment/moment";
 
 interface IProps{
     props: News
@@ -10,6 +11,8 @@ interface IProps{
 
 export default function Preview({props}: IProps) {
 
+    const date = new Date(props.date);
+    const formatted_date = moment(date).format("DD.MM.yyyy hh:MM:ss");
     let comment;
     if (props.commentable)
         comment =
@@ -27,8 +30,10 @@ export default function Preview({props}: IProps) {
         <Link to="/#123" className={`${s.card} ${s.preview} flex`}>
             <img className="object-cover" src={props.image} alt="" />
             <div className="flex flex-col ml-5">
+                <div className="overflow-ellipsis overflow-hidden text-xl">{props.title}</div>
                 <div className="flex-1 overflow-ellipsis overflow-hidden">{props.message}</div>
-                <div className="flex space-x-6 mt-2">
+                <div className="flex space-x-2 mt-2 mb-8">{props.author} - {formatted_date}</div>
+                <div className="flex space-x-6">
                     <div className="flex items-center">
                         <div className="">
                             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">

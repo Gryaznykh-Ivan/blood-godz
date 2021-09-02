@@ -1,26 +1,40 @@
 import httpClient from "../http/httpClient";
 import store from "../store";
-import {News, ADD_NEWS} from "../types/actions";
+import {News, GET_NEWS} from "../types/actions";
 
 const getLastNews = async () => {
     await httpClient.get('/news/getlastnews')
         .then(({data}) => {
             store.dispatch({
-                type: ADD_NEWS,
+                type: GET_NEWS,
                 'news': data
             });
         })
         .catch(e => console.log(e));
 }
 
-const getAllNews = () =>
+const getAllNews = async () =>
 {
-
+    await httpClient.get('/news/getallnewsids')
+        .then(({data}) => {
+            store.dispatch({
+                type: GET_NEWS,
+                'news': data
+            });
+        })
+        .catch(e => console.log(e));
 }
 
-const getNewsById = (id: bigint) =>
+const getNewsById = async (id: bigint) =>
 {
-
+    await httpClient.get('/news/getlastnews')
+        .then(({data}) => {
+            store.dispatch({
+                type: GET_NEWS,
+                'news': data
+            });
+        })
+        .catch(e => console.log(e));
 }
 
 export {
