@@ -1,6 +1,6 @@
-import { connect } from 'react-redux'
-import React, { useEffect } from 'react'
-
+import {connect, useDispatch, useSelector} from 'react-redux'
+import React, {useEffect, useState} from 'react'
+import {login, register, check, logout} from '../../actions/auth'
 import './SideBar.css'
 import { AppState } from '../../store'
 
@@ -10,24 +10,51 @@ interface PropsFromState {
 
 interface PropsFromComponent {
     isOpened: boolean,
-    isOpenedToggle: () => void
+    isOpenedToggle: () => void,
 }
 
 type Props = PropsFromState & PropsFromComponent
 
-const SideBar = ({ isOpened, isOpenedToggle, isAuth }: Props) => {
+const SideBar = ({ isOpened, isOpenedToggle }: Props) => {
+
+    const [isAuth, setAuth] = useState(false);
+    const auth = useSelector((state:AppState) => state.auth);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        setAuth(auth.token !== '');
+    }, [auth]);
+
+    useEffect(() => {
+        dispatch(check());
+    }, []);
+
+    const onLoginClick = () => {
+        dispatch(login('test', 'test'));
+    }
+
+    const onRegisterClick = () => {
+        dispatch(register('test', 'test','test@test.ru'));
+    }
+
+    const onLogoutClick = () => {
+        dispatch(logout());
+    }
 
     return (
         <div className="transition-all duration-700">
         <div className={ `fixed xl:z-50 z-20 top-0 right-0 scrollbar-hidden overflow-x-hidden ${ isOpened ? 'xl:w-80 w-full' : 'w-20 hidden' } bg-black h-screen xl:flex flex-col py-16 px-4 bg-opacity-80 text-white` }>
             <div className={ `flex flex-col flex-1 items-center ${ isAuth && 'hidden' }` }>
                 <img className="mb-2" src="/static/images/icons/persone.png" alt="" />
-                <button className="">Register</button>
-                <button className="">Login</button>
+                <button className="" onClick={onRegisterClick}>Register</button>
+                <button className="" onClick={onLoginClick}>Login</button>
+            </div>
+            <div className={ `flex-1 space-y-4 ${ !isAuth && 'hidden' }` }>
+                <button className="" onClick={onLogoutClick}>Logout</button>
             </div>
             <div className={ `flex-1 space-y-4 ${ !isAuth && 'hidden' }` }>
                 <div className="flex">
-                    <img className="rounded-xl" src="/static/images/design/avatar.png" alt=""/>
+                    <img className="rounded-xl" src={auth.avatar} alt=""/>
                     <div className={ `ml-5 flex-1 ${ !isOpened && 'hidden' }` }>
                         <div className="text-xl mb-3">NickName</div>
                         <div className="flex justify-between">

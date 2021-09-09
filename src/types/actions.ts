@@ -1,13 +1,19 @@
 export const LOADING_AUTH = "LOADING_AUTH"
+export const CHECK_AUTH = "CHECK_AUTH"
 export const LOGIN_AUTH = "LOGIN_AUTH"
 export const FAILED_AUTH = "FAILED_AUTH"
 export const LOGOUT_AUTH = "LOGOUT_AUTH"
+export const REGISTER_AUTH = "REGISTER_AUTH"
 export const CHANGE_LOCALE = "CHANGE_LOCALE";
 export const GET_NEWS = "GET_NEWS";
 
 interface LoadingAuthAction {
     type: typeof LOADING_AUTH,
     isLoading?: boolean
+}
+
+interface CheckAuthAction {
+    type: typeof CHECK_AUTH
 }
 
 interface LoginAuthAction {
@@ -25,6 +31,10 @@ interface FailedAuthAction {
 
 interface LogoutAuthAction {
     type: typeof LOGOUT_AUTH
+}
+
+interface RegisterAuthAction{
+    type: typeof REGISTER_AUTH
 }
 
 interface ChangeLocalisation {
@@ -51,4 +61,4 @@ export interface News {
 export type Locales = "rus" | "eng"
 export type NewsActionTypes = AddNews
 export type LocalizationActionTypes = ChangeLocalisation
-export type AuthActionTypes = LoadingAuthAction | LoginAuthAction | FailedAuthAction | LogoutAuthAction
+export type AuthActionTypes = LoadingAuthAction | LoginAuthAction | RegisterAuthAction | FailedAuthAction | LogoutAuthAction | CheckAuthAction
