@@ -3,6 +3,9 @@ import React, {useEffect, useState} from 'react'
 import {login, register, check, logout} from '../../actions/auth'
 import './SideBar.css'
 import { AppState } from '../../store'
+import {ShowPopup} from "../../utils/Popup";
+import ItemEdit from "../Popups/ItemEdit/ItemEdit";
+import Register from "../Popups/Register/Register";
 
 interface PropsFromState {
     isAuth: boolean
@@ -34,7 +37,10 @@ const SideBar = ({ isOpened, isOpenedToggle }: Props) => {
     }
 
     const onRegisterClick = () => {
-        dispatch(register('test', 'test','test@test.ru'));
+        ShowPopup(Register, {})
+        .then(a => {
+            dispatch(register('test', 'test','test@test.ru'));
+        });
     }
 
     const onLogoutClick = () => {

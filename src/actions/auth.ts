@@ -11,7 +11,6 @@ import {
 
 
 const login = (username: string, password: string): AppThunk => async (dispatch: AppDispatch) => {
-    console.log("ACTION: LOGIN");
     dispatch({ type: LOADING_AUTH, isLoading: true })
     const hwid = await getFingetprint();
     api.post('account/login', {
@@ -72,7 +71,7 @@ const check = (): AppThunk => async (dispatch: AppDispatch) => {
 const logout = (): AppThunk => (dispatch: AppDispatch) => {
     dispatch({ type: LOADING_AUTH, isLoading: true })
     localStorage.clear();
-    dispatch({type: LOGOUT_AUTH, isAuth: false, isLoading: false});
+    dispatch({type: LOGOUT_AUTH, isAuth: false, isLoading: false, token: ''});
 }
 
 export {
