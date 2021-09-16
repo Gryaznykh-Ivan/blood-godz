@@ -31,9 +31,7 @@ const login = (username: string, password: string): AppThunk => async (dispatch:
             hwid: hwid
         });
     }).catch(err => {
-        console.log("ERROR");
-        console.log(err);
-        dispatch({type: FAILED_AUTH, reason: err.reason})
+        dispatch({type: FAILED_AUTH, error: err.reason})
     });
 }
 
@@ -48,7 +46,7 @@ const register = (username: string, password: string, email: string): AppThunk =
     }).then((data) => {
         dispatch({type: REGISTER_AUTH, ...data, isAuth: true, isLoading: false })
     }).catch(err => {
-        dispatch({type: FAILED_AUTH, reason: err.reason, isAuth: false, isLoading: false})
+        dispatch({type: FAILED_AUTH, error: err.reason, isAuth: false, isLoading: false})
     });
 }
 

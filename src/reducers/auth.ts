@@ -16,7 +16,8 @@ const initialState: AuthState = {
     uid: 0,
     username: "",
     avatar: "",
-    token: ""
+    token: "",
+    error: ""
 }
 
 export default function AuthReducer(state = initialState, action: AuthActionTypes): AuthState {

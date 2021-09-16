@@ -26,7 +26,7 @@ interface LoginAuthAction {
 
 interface FailedAuthAction {
     type: typeof FAILED_AUTH,
-    reason: string
+    error: string
 }
 
 interface LogoutAuthAction {

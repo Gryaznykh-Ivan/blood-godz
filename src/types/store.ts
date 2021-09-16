@@ -5,5 +5,6 @@ export interface AuthState {
     uid: number,
     username: string,
     avatar: string,
-    token: string
+    token: string,
+    error: string
 }

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {login, register, check, logout} from '../../actions/auth'
 import './SideBar.css'
 import { AppState } from '../../store'
-import {ShowPopup} from "../../utils/Popup";
+import {PopupResponse, RegisterPopupResponse, ShowPopup} from "../../utils/Popup";
 import ItemEdit from "../Popups/ItemEdit/ItemEdit";
 import Register from "../Popups/Register/Register";
 
@@ -38,8 +38,10 @@ const SideBar = ({ isOpened, isOpenedToggle }: Props) => {
 
     const onRegisterClick = () => {
         ShowPopup(Register, {})
-        .then(a => {
-            dispatch(register('test', 'test','test@test.ru'));
+        .then((a: RegisterPopupResponse|PopupResponse) => {
+            if ("login" in a) {
+                dispatch(register(a.login, a.password, a.email));
+            }
         });
     }
 
