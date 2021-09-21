@@ -24,6 +24,8 @@ const SideBar = ({ isOpened, isOpenedToggle }: Props) => {
     const auth = useSelector((state:AppState) => state.auth);
     const dispatch = useDispatch();
 
+    console.log(auth);
+
     useEffect(() => {
         setAuth(auth.token !== '');
     }, [auth]);
