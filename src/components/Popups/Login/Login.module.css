@@ -1,0 +1,102 @@
+.register {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+    padding: 0 15px;
+}
+
+.error{
+    color: red;
+    padding: 0 !important;
+    margin-bottom: 13px;
+}
+
+.register form
+{
+    background: linear-gradient(92.17deg, #1A1A1A 33.78%, rgba(29, 23, 23, 0.76) 113.45%);
+    box-shadow: 5px 9px 8px rgba(0, 0, 0, 0.35);
+    border-radius: 24px;
+    padding: 15px;
+    position: relative;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: #969696;
+}
+
+.register h2{
+    height: 31.17px;
+}
+
+.register label{
+    margin-bottom: 15px;
+    line-height: 26px;
+    padding-left: 36px;
+}
+
+.register input{
+    background: #0E0E0E;
+    border-radius: 9px;
+    height: 69.67px;
+    padding: 0 13px;
+    margin-bottom: 13px;
+}
+
+.register input[type="checkbox"]
+{
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.register input[type="checkbox"]:checked + div
+{
+    background-position: center;
+    background-size: 90% 90%;
+    background-repeat: no-repeat;
+    background-color: red;
+}
+
+.register div
+{
+    background-color: transparent;
+    border: 2px solid #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    min-height: 26px;
+    margin-right: 10px;
+
+    position: absolute;
+    left: 15px;
+}
+
+.register button
+{
+    position: absolute;
+    right: 15px;
+    bottom: 30px;
+    background: linear-gradient(97.69deg, #FF395D 10.67%, #FF4B6C 82.97%);
+    border-radius: 28px;
+    padding: 20px;
+    color: #F5F5F5;
+}
+
+@media screen and (max-width: 1250px) {
+    .register button
+    {
+        position: static;
+        width: 100%;
+    }
+}

@@ -3,7 +3,6 @@ import {PopupResponse, RegisterPopupResponse} from '../../../utils/Popup';
 
 import s from './Register.module.css'
 import {Provider, useDispatch, useSelector} from "react-redux";
-import {register} from "../../../actions/auth";
 import store, {AppState} from "../../../store";
 
 interface Props {

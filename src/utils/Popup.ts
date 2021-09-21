@@ -13,7 +13,12 @@ export interface RegisterPopupResponse {
     email: string
 }
 
-const CreatePopup = (component: ({}: any) => JSX.Element, props: any): Promise<PopupResponse|RegisterPopupResponse> => {
+export interface LoginPopupResponse {
+    login: string,
+    password: string
+}
+
+const CreatePopup = (component: ({}: any) => JSX.Element, props: any): Promise<PopupResponse|RegisterPopupResponse|LoginPopupResponse> => {
     const element = document.createElement('div');
     element.setAttribute('id', 'popup');
     document.body.appendChild(element);
@@ -28,7 +33,7 @@ const CreatePopup = (component: ({}: any) => JSX.Element, props: any): Promise<P
     });
 }
 
-const ShowPopup = async (component: ({}: any) => JSX.Element, props: any): Promise<PopupResponse|RegisterPopupResponse> => {
+const ShowPopup = async (component: ({}: any) => JSX.Element, props: any): Promise<PopupResponse|RegisterPopupResponse|LoginPopupResponse> => {
     return await CreatePopup(component, props);
 }  
 
