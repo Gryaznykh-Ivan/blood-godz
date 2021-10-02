@@ -46,11 +46,11 @@ const Login = ({ resolve }: Props) => {
         <Provider store={store}>
             <div ref={refs.regRef} className={`fixed ${s.register}`}>
                 <form onSubmit={handleSubmit} className="">
-                    <h2>Регистрация</h2>
+                    <h2>Вход</h2>
                     <input placeholder="Введите логин" className="w-full" onChange={e => setLogin(e.target.value)} required />
                     <input placeholder="Введите пароль" className="w-full" onChange={e => setPassword(e.target.value)} required/>
                     <label className={s.error}>{error}</label>
-                    <button type="submit">Зарегестрироваться</button>
+                    <button type="submit">Войти</button>
                 </form>
             </div>
         </Provider>
