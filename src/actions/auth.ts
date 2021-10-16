@@ -8,7 +8,6 @@ import {
     FAILED_AUTH,
     LOADING_AUTH, CHECK_AUTH,
 } from "../types/actions";
-import {log} from "util";
 
 
 const login = (username: string, password: string): AppThunk => async (dispatch: AppDispatch) => {

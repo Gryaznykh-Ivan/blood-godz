@@ -1,12 +1,22 @@
-import {connect, useDispatch, useSelector} from 'react-redux'
+import {batch, connect, useDispatch, useSelector} from 'react-redux'
 import React, {useEffect, useState} from 'react'
 import {login, register, check, logout} from '../../actions/auth'
 import './SideBar.css'
-import {AppState} from '../../store'
+import {AppDispatch, AppState, AppThunk} from '../../store'
 import {LoginPopupResponse, PopupResponse, RegisterPopupResponse, ShowPopup} from "../../utils/Popup";
 import ItemEdit from "../Popups/ItemEdit/ItemEdit";
 import Register from "../Popups/Register/Register";
 import Login from "../Popups/Login/Login";
+import {
+    addPlayerLobby,
+    changeGameTypeLobby,
+    changeRegionLobby,
+    createLobby, getInviteLinkLobby, getLobby, msgChatLobby,
+    removeLobby, removePlayerLobby,
+    setFindLobby, useInviteLinkLobby
+} from "../../actions/lobby";
+import socket from "../../utils/socket";
+import {LOBBY_MESSAGE, SOCKET_FAILURE} from "../../types/actions";
 
 interface PropsFromState {
     isAuth: boolean
@@ -23,11 +33,27 @@ const SideBar = ({isOpened, isOpenedToggle}: Props) => {
 
     const [isAuth, setAuth] = useState(false);
     const auth = useSelector((state: AppState) => state.auth);
+    const lobby = useSelector((state: AppState) => state.lobby);
     const dispatch = useDispatch();
 
     useEffect(() => {
         setAuth(auth.token !== '');
     }, [auth]);
+
+    useEffect(() => {
+        batch(() => {
+            dispatch(createLobby());
+            dispatch(changeGameTypeLobby("616431cf5d01f378d252dd93", 3));
+            dispatch(addPlayerLobby("616431cf5d01f378d252dd93", 1));
+            dispatch(getLobby("616431cf5d01f378d252dd93"));
+        });
+
+        setTimeout(() => {dispatch(msgChatLobby("616431cf5d01f378d252dd93", "test"))}, 5000)
+    }, []);
+
+    useEffect(() => {
+        console.log(lobby);
+    }, [lobby]);
 
     useEffect(() => {
         dispatch(check());
