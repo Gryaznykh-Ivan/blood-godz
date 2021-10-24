@@ -4,6 +4,7 @@ import getFingetprint from "../utils/fingerprint";
 import {v1 as uuid} from 'uuid';
 import api from "../utils/api";
 import {
+    LOBBY_CHANGED,
     LOBBY_FIND_CHANGED,
     LOBBY_GAMEMODE_CHANGED, LOBBY_GET_INVITE_LINK, LOBBY_MESSAGE,
     LOBBY_PLAYER_ADDED, LOBBY_PLAYER_REMOVED,
@@ -30,7 +31,6 @@ const createLobby = (): AppThunk => async (dispatch: AppDispatch) => {
     }).then(response => {
         const {reason} = response.data;
         const id = reason.redirect.match(/\/lobby\/(.*)/)[1];
-        console.log(id);
         dispatch({type: NEW_LOBBY, id: id})
     });
 }
@@ -56,8 +56,6 @@ const removeLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
         })
         .catch(error => dispatch({type: SOCKET_FAILURE}))
 }
-
-
 
 const changeRegionLobby = (id: string, region: "RU"): AppThunk => async (dispatch: AppDispatch) => {
     let request = getBaseMessage(changeRegionLobby.name);
@@ -165,9 +163,8 @@ const getLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    console.log(data.reason);
                     dispatch({
-                        type: LOBBY_FIND_CHANGED,
+                        type: LOBBY_CHANGED,
                         players: data.reason.players,
                         chat: data.reason.chat
                     });
@@ -226,7 +223,9 @@ const msgChatLobby = (id: string, message: string): AppThunk => async (dispatch:
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
+                    console.log(data);
                     dispatch({type: LOBBY_MESSAGE, message: message});
+                    connection.close();
                 }
             };
         })

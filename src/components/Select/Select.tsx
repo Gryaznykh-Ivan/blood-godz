@@ -1,14 +1,27 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 interface Props {
     customColor?: string,
-    type?: string
+    type?: string,
+    variants?: any,
+    placeholder?: any,
+    callback?: (result: any) => void
 }
 
-const Select = ({ customColor, type }: Props) => {
+const Select = ({customColor, type, variants, placeholder, callback}: Props) => {
     const selectRef = useRef<HTMLDivElement>(null);
     const [isOpened, setIsOpened] = useState(false);
     const [selected, setSelected] = useState('');
+
+    useEffect(() => {
+        if (callback)
+            callback(selected);
+    }, [selected]);
+
+    useEffect(() => {
+        if (placeholder)
+            setSelected(placeholder);
+    }, []);
 
     const onSelectEvent = (selected: string) => {
         selectRef.current?.blur();
@@ -25,21 +38,25 @@ const Select = ({ customColor, type }: Props) => {
     };
 
     return (
-        <div ref={ selectRef } onBlur={ onBlurEvent } tabIndex={ 3 }>
-            <div className={ `relative w-full rounded py-2 px-4 ${ customColor ?? "bg-gray-900" } `}>
+        <div ref={selectRef} onBlur={onBlurEvent} tabIndex={3}>
+            <div className={`relative w-full rounded py-2 px-4 ${customColor ?? "bg-gray-900"} `}>
 
-                <div className="flex items-center justify-between cursor-pointer space-x-2.5" onClick={ () => onClickEvent() }>
-                    <div className="">{ selected || "Пусто" }</div>
-                    <svg className={ `${isOpened && "transform rotate-180"}` } width="19" height="12" viewBox="0 0 19 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1.38447L9.58543 10.6152L18.1709 1.38447" stroke="#969696" stroke-linecap="round" stroke-linejoin="round"/>
+                <div className="flex items-center justify-between cursor-pointer space-x-2.5"
+                     onClick={() => onClickEvent()}>
+                    <div className="">{(variants && variants[selected]) || "Пусто"}</div>
+                    <svg className={`${isOpened && "transform rotate-180"}`} width="19" height="12" viewBox="0 0 19 12"
+                         fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1.38447L9.58543 10.6152L18.1709 1.38447" stroke="#969696" stroke-linecap="round"
+                              stroke-linejoin="round"/>
                     </svg>
                 </div>
 
-                <div className={` w-full absolute z-10 top-12 left-0 bg-gray-900 rounded overflow-y-auto scrollbar max-h-40 p-1 ${ !isOpened && "hidden" }` }>
+                <div
+                    className={` w-full absolute z-10 top-12 left-0 bg-gray-900 rounded overflow-y-auto scrollbar max-h-40 p-1 ${!isOpened && "hidden"}`}>
                     <div className="space-y-2 text-center">
-                        <div className="cursor-pointer" onClick={() => onSelectEvent("Пистолет 1")}>Пистолет 1</div>
-                        <div className="cursor-pointer" onClick={() => onSelectEvent("Пистолет 2")}>Пистолет 2</div>
-                        <div className="cursor-pointer" onClick={() => onSelectEvent("Пистолет 3")}>Пистолет 3</div>
+                        {variants && Object.keys(variants).map((index, i) =>
+                            <div className="cursor-pointer" key={i} onClick={() => onSelectEvent(index)}>{variants[index]}</div>
+                        )}
                     </div>
                 </div>
             </div>

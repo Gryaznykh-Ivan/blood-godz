@@ -41,21 +41,6 @@ const SideBar = ({isOpened, isOpenedToggle}: Props) => {
     }, [auth]);
 
     useEffect(() => {
-        batch(() => {
-            dispatch(createLobby());
-            dispatch(changeGameTypeLobby("616431cf5d01f378d252dd93", 3));
-            dispatch(addPlayerLobby("616431cf5d01f378d252dd93", 1));
-            dispatch(getLobby("616431cf5d01f378d252dd93"));
-        });
-
-        setTimeout(() => {dispatch(msgChatLobby("616431cf5d01f378d252dd93", "test"))}, 5000)
-    }, []);
-
-    useEffect(() => {
-        console.log(lobby);
-    }, [lobby]);
-
-    useEffect(() => {
         dispatch(check());
     }, []);
 

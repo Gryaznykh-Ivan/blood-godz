@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo, useRef} from 'react';
 
 import Search from '../../components/Lobby/Search';
 import Select from '../../components/Select/Select';
@@ -6,10 +6,75 @@ import Select from '../../components/Select/Select';
 import Chat from '../../components/Chat/Chat';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import BigSwitcher from '../../components/Switchers/Big';
+import {useDispatch, useSelector} from "react-redux";
+import {AppState} from "../../store";
+import {createLobby, getLobby, msgChatLobby, changeGameTypeLobby} from "../../actions/lobby";
+import App from "../../App";
+import {LobbyState} from "../../types/store";
 
 export default function Lobby() {
     const [checked, setChecked] = useState(false);
     const [search, setSearch] = useState(false);
+    const [chat, setChat] = useState([]);
+
+    const dispatch = useDispatch();
+
+    const lobbyID = useSelector((state: AppState) => state.lobby.id);
+    const lobbyChat = useSelector((state: AppState) => state.lobby.chat);
+    const lobbyMode = useSelector((state: AppState) => state.lobby.gamemode)
+
+    console.log(lobbyChat);
+
+
+    //INIT LOBBY
+    useEffect(() => {
+        dispatch(createLobby());
+    }, []);
+
+    //ON LOBBY INITED
+
+    useEffect(() => {
+        dispatch(getLobby(lobbyID));
+        setTimeout(() => dispatch(msgChatLobby(lobbyID, "test")), 3000);
+    }, [lobbyID]);
+
+    //CATCH NEW MESSAGES
+    useMemo(() => {
+
+        //setChat(lobbyChat);
+    },[lobbyChat]);
+
+    //----------------------------------------
+    //               Props
+    //----------------------------------------
+
+    const selectModeProps = {
+        type: "mode",
+        variants: {
+            1: "1 vs 1",
+            2: "2 vs 2",
+            3: "3 vs 3",
+            5: "5 vs 5"
+        },
+        placeholder: lobbyMode,
+        callback: (mode: LobbyState["gamemode"])=>{
+            dispatch(changeGameTypeLobby(lobbyID, mode));
+        }
+    }
+
+    //----------------------------------------
+    //               Refs
+    //----------------------------------------
+
+    const selectModeRef = useRef<HTMLDivElement>(null);
+
+    //----------------------------------------
+    //              Handles
+    //----------------------------------------
+
+    const changedMode = (e: any) => {
+
+    }
 
     const data = [
         {name: 'James', msg: 'Новости, которые мы заслужили)', imageUrl: "/static/images/design/avatar.png", alien: false},
@@ -32,7 +97,7 @@ export default function Lobby() {
                     <div className="mt-2.5 font-medium text-gray-400 lg:hidden uppercase">#пригласить друзей</div>
                     <div className="mt-7 hidden lg:block">
                         <div className="flex items-center space-x-56">
-                            <div className="font-bold text-4xl">3 vs 3</div>
+                            <div className="font-bold text-4xl">{lobbyMode} vs {lobbyMode}</div>
                             { search && <Search players={ 1621 } />}
                         </div>
                     </div>
@@ -46,7 +111,7 @@ export default function Lobby() {
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Выбрать режим игры:</div>
-                                <Select type="mode"/>
+                                <Select {...selectModeProps}/>
                             </div>
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
@@ -63,8 +128,8 @@ export default function Lobby() {
                     <div className="mt-10 flex space-x-7">
                         <div className="w-full lg:w-auto">
                             {
-                                <button 
-                                    className={`${ !search ? 'bg-pink' : 'bg-gradient-to-br from-gray-500 to-gray-900'} w-full rounded-full py-5 font-bold text-2xl focus:outline-none lg:w-80`} 
+                                <button
+                                    className={`${ !search ? 'bg-pink' : 'bg-gradient-to-br from-gray-500 to-gray-900'} w-full rounded-full py-5 font-bold text-2xl focus:outline-none lg:w-80`}
                                     onClick={() => setSearch(prev => !prev)}
                                 >
                                     { !search ? 'Поиск игры': 'Остановить поиск'}

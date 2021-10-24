@@ -14,6 +14,7 @@ export const LOBBY_GAMEMODE_CHANGED = "LOBBY_GAMEMODE_CHANGED";
 export const LOBBY_PLAYER_ADDED = "LOBBY_PLAYER_ADDED";
 export const LOBBY_PLAYER_REMOVED = "LOBBY_PLAYER_REMOVED";
 export const LOBBY_FIND_CHANGED = "LOBBY_FIND_CHANGED";
+export const LOBBY_CHANGED = "LOBBY_CHANGED";
 export const LOBBY_USE_INVITE_LINK = "LOBBY_USE_INVITE_LINK";
 export const LOBBY_GET_INVITE_LINK = "LOBBY_GET_INVITE_LINK";
 export const LOBBY_MESSAGE = "LOBBY_MESSAGE";
@@ -80,6 +81,10 @@ interface LobbyStateAction{
     type: typeof LOBBY_FIND_CHANGED
 }
 
+interface LobbyChangedAction{
+    type: typeof LOBBY_CHANGED
+}
+
 interface LobbyInviteUseAction{
     type: typeof LOBBY_USE_INVITE_LINK
 }
@@ -118,4 +123,4 @@ export type Locales = "rus" | "eng"
 export type NewsActionTypes = AddNews
 export type LocalizationActionTypes = ChangeLocalisation
 export type AuthActionTypes = LoadingAuthAction | LoginAuthAction | RegisterAuthAction | FailedAuthAction | LogoutAuthAction | CheckAuthAction
-export type LobbyActionTypes = SocketFailureAction | NewLobbyAction | LobbyRegionAction | LobbyGamemodeAction | LobbyPlayerAddAction | LobbyPlayerRemoveAction | LobbyStateAction |  LobbyInviteUseAction | LobbyInviteGetAction | LobbyMessageAction | RemoveLobbyAction
+export type LobbyActionTypes = SocketFailureAction | NewLobbyAction | LobbyRegionAction | LobbyGamemodeAction | LobbyPlayerAddAction | LobbyPlayerRemoveAction | LobbyStateAction | LobbyChangedAction |  LobbyInviteUseAction | LobbyInviteGetAction | LobbyMessageAction | RemoveLobbyAction
