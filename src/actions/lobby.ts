@@ -225,6 +225,7 @@ const getInviteLinkLobby = (id: string): AppThunk => async (dispatch: AppDispatc
 }
 
 const msgChatLobby = (id: string, message: string): AppThunk => async (dispatch: AppDispatch) => {
+    console.log("REQUEST MSG");
     let request = getBaseMessage(msgChatLobby.name);
     request.lobbyOid = id;
     request.msg = message
