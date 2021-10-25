@@ -39,7 +39,11 @@ export default function Chat({data}: PropsFromComponent) {
 
     const sendMessage = () => {
         if (lobbyId && inputRef.current && !loading)
+        {
             dispatch(msgChatLobby(lobbyId, inputRef.current.value));
+            inputRef.current.value = '';
+        }
+
     }
 
     return (

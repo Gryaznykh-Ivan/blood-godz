@@ -28,6 +28,7 @@ export default function Lobby() {
     const lobbyID = useSelector((state: AppState) => state.lobby.id);
     const lobbyChat = useSelector((state: AppState) => state.lobby.chat);
     const lobbyMode = useSelector((state: AppState) => state.lobby.gamemode);
+    const username = useSelector((state: AppState) => state.auth.username);
 
     //----------------------------------------
     //               Effects
@@ -59,8 +60,8 @@ export default function Lobby() {
             formatedMessages.push({
                 name: lobbyChat[key].player,
                 msg: lobbyChat[key].message,
-                imageUrl: '/static/images/design/avatar.png',
-                alien: true
+                imageUrl: `https://static.bloodgodz.com/accounts/avatars/${lobbyChat[key].player}`,
+                alien: username === lobbyChat[key].player
             });
         })
         setChat(formatedMessages);
