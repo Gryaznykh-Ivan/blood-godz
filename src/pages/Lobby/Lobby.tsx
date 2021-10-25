@@ -7,73 +7,90 @@ import Chat from '../../components/Chat/Chat';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import BigSwitcher from '../../components/Switchers/Big';
 import {useDispatch, useSelector} from "react-redux";
-import {AppState} from "../../store";
 import {createLobby, getLobby, msgChatLobby, changeGameTypeLobby} from "../../actions/lobby";
-import App from "../../App";
-import {LobbyState} from "../../types/store";
+import {gamemode} from "../../types/store";
+import {AppState} from "../../store";
 
 export default function Lobby() {
-    const [checked, setChecked] = useState(false);
-    const [search, setSearch] = useState(false);
-    const [chat, setChat] = useState([]);
+
+    //----------------------------------------
+    //               States
+    //----------------------------------------
 
     const dispatch = useDispatch();
 
+    const [checked, setChecked] = useState(false);
+    const [search, setSearch] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [chat, setChat] = useState([]);
+
+    const lobbyLoadingState = useSelector((state: AppState) => state.lobby.loadingState);
     const lobbyID = useSelector((state: AppState) => state.lobby.id);
     const lobbyChat = useSelector((state: AppState) => state.lobby.chat);
-    const lobbyMode = useSelector((state: AppState) => state.lobby.gamemode)
+    const lobbyMode = useSelector((state: AppState) => state.lobby.gamemode);
 
-    console.log(lobbyChat);
+    //----------------------------------------
+    //               Effects
+    //----------------------------------------
 
 
     //INIT LOBBY
-    useEffect(() => {
-        dispatch(createLobby());
-    }, []);
+    useEffect(() => { dispatch(createLobby()) }, []);
 
     //ON LOBBY INITED
-
     useEffect(() => {
+        if (!lobbyID) return;
+        //subscribing to lobby updates
         dispatch(getLobby(lobbyID));
-        setTimeout(() => dispatch(msgChatLobby(lobbyID, "test")), 3000);
     }, [lobbyID]);
+
+    //ON LOBBY LOADING SEMAPHORE CHANGED
+    useEffect(() => {
+        if (lobbyMode)
+            // > 0 means something loading, = 0 all loaded
+            setLoading(lobbyLoadingState >  0)
+    }, [lobbyLoadingState]);
 
     //CATCH NEW MESSAGES
     useMemo(() => {
-
         //setChat(lobbyChat);
     },[lobbyChat]);
-
-    //----------------------------------------
-    //               Props
-    //----------------------------------------
-
-    const selectModeProps = {
-        type: "mode",
-        variants: {
-            1: "1 vs 1",
-            2: "2 vs 2",
-            3: "3 vs 3",
-            5: "5 vs 5"
-        },
-        placeholder: lobbyMode,
-        callback: (mode: LobbyState["gamemode"])=>{
-            dispatch(changeGameTypeLobby(lobbyID, mode));
-        }
-    }
 
     //----------------------------------------
     //               Refs
     //----------------------------------------
 
-    const selectModeRef = useRef<HTMLDivElement>(null);
+    //EMPTY
 
     //----------------------------------------
-    //              Handles
+    //               Hooks
     //----------------------------------------
 
-    const changedMode = (e: any) => {
+    //On gamemode changed in selector
+    const onGamemodeChanged = (mode: gamemode) =>
+    {
+        if (!lobbyID) return;
+        dispatch(changeGameTypeLobby(lobbyID, mode));
+    }
 
+    //----------------------------------------
+    //               Props
+    //----------------------------------------
+
+    //Gamemodes list for selector
+    const modes:{[key in gamemode]: string} = {
+        1: "1 vs 1",
+        2: "2 vs 2",
+        3: "3 vs 3",
+        5: "5 vs 5"
+    };
+
+    //Selector props
+    const selectModeProps = {
+        type: "mode",
+        variants: modes,
+        placeholder: lobbyMode,
+        callback: onGamemodeChanged
     }
 
     const data = [
@@ -97,7 +114,10 @@ export default function Lobby() {
                     <div className="mt-2.5 font-medium text-gray-400 lg:hidden uppercase">#пригласить друзей</div>
                     <div className="mt-7 hidden lg:block">
                         <div className="flex items-center space-x-56">
-                            <div className="font-bold text-4xl">{lobbyMode} vs {lobbyMode}</div>
+                            { loading &&
+                                <div className={`font-bold text-4xl loading2`} /> ||
+                                <div className={`font-bold text-4xl`}>{lobbyMode} vs {lobbyMode}</div>
+                            }
                             { search && <Search players={ 1621 } />}
                         </div>
                     </div>
@@ -111,7 +131,10 @@ export default function Lobby() {
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Выбрать режим игры:</div>
-                                <Select {...selectModeProps}/>
+                                <div className={loading && 'loading' || ''}>
+                                    <Select {...selectModeProps}/>
+                                </div>
+
                             </div>
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">

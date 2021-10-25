@@ -1,7 +1,10 @@
 import {LobbyState} from '../types/store'
 import {
+    LOBBY_CHANGED,
     LOBBY_FIND_CHANGED,
-    LOBBY_GAMEMODE_CHANGED, LOBBY_GET_INVITE_LINK,
+    LOBBY_GAMEMODE_CHANGED,
+    LOBBY_GET_INVITE_LINK,
+    LOBBY_LOADING,
     LOBBY_MESSAGE,
     LOBBY_PLAYER_ADDED,
     LOBBY_PLAYER_REMOVED,
@@ -14,20 +17,23 @@ import {
 } from '../types/actions'
 
 const initialState: LobbyState = {
-    id: '',
+    id: null,
     region: 'RU',
-    gamemode: 1,
+    gamemode: null,
     findState: false,
     leader: undefined,
     chat: [],
     players: [],
     invites: [],
     lobbyRank: 0,
-    private: false
+    private: false,
+    loadingState: 0
 }
 
 export default function AuthReducer(state = initialState, action: LobbyActionTypes): LobbyState {
     switch (action.type) {
+
+
         case LOBBY_MESSAGE:
         case LOBBY_GET_INVITE_LINK:
         case LOBBY_USE_INVITE_LINK:
@@ -39,8 +45,21 @@ export default function AuthReducer(state = initialState, action: LobbyActionTyp
         case LOBBY_REMOVED:
         case NEW_LOBBY:
         case SOCKET_FAILURE:
+        {
             const {type, ...action_data} = action;
-            return {...state, ...action_data}
+            // Changing loading semaphore state
+            state.loadingState = Math.max(state.loadingState - 1, 0);
+            return {...state, ...action_data};
+        }
+        case LOBBY_CHANGED:
+        {
+            //Get lobby works as background proccess, so it doesn't need semaphore updates
+            const {type, ...action_data} = action;
+            return {...state, ...action_data};
+        }
+        case LOBBY_LOADING:
+            state.loadingState = state.loadingState + 1;
+            return {...state};
         default:
             return state;
     }

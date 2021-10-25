@@ -9,10 +9,12 @@ export interface AuthState {
     error: string
 }
 
+export type gamemode = 1 | 2 | 3 | 5;
+
 export interface LobbyState {
-    id: string,
+    id: string | null,
     region: "RU",
-    gamemode: 1|2|3|5,
+    gamemode: gamemode | null,
     findState: boolean,
     chat: Array<string>,
     players: Array<number>,
@@ -20,4 +22,5 @@ export interface LobbyState {
     leader: number|undefined,
     private: boolean,
     lobbyRank: number,
+    loadingState: number
 }

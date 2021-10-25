@@ -21,7 +21,7 @@ const Select = ({customColor, type, variants, placeholder, callback}: Props) => 
     useEffect(() => {
         if (placeholder)
             setSelected(placeholder);
-    }, []);
+    }, [placeholder]);
 
     const onSelectEvent = (selected: string) => {
         selectRef.current?.blur();
