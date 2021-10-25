@@ -7,8 +7,8 @@ import Chat from '../../components/Chat/Chat';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import BigSwitcher from '../../components/Switchers/Big';
 import {useDispatch, useSelector} from "react-redux";
-import {createLobby, getLobby, msgChatLobby, changeGameTypeLobby, changeRegionLobby} from "../../actions/lobby";
-import {gamemode, regions} from "../../types/store";
+import {createLobby, getLobby, changeGameTypeLobby, changeRegionLobby} from "../../actions/lobby";
+import {gamemode, Message, regions} from "../../types/store";
 import {AppState} from "../../store";
 
 export default function Lobby() {
@@ -22,7 +22,7 @@ export default function Lobby() {
     const [checked, setChecked] = useState(false);
     const [search, setSearch] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [chat, setChat] = useState([]);
+    const [chat, setChat] = useState<Message[]>([]);
 
     const lobbyLoadingState = useSelector((state: AppState) => state.lobby.loadingState);
     const lobbyID = useSelector((state: AppState) => state.lobby.id);
@@ -53,7 +53,17 @@ export default function Lobby() {
 
     //CATCH NEW MESSAGES
     useMemo(() => {
-        //setChat(lobbyChat);
+        console.log(lobbyChat);
+        let formatedMessages:Message[] = [];
+        Object.keys(lobbyChat).map((key, index) => {
+            formatedMessages.push({
+                name: lobbyChat[key].player,
+                msg: lobbyChat[key].message,
+                imageUrl: '/static/images/design/avatar.png',
+                alien: true
+            });
+        })
+        setChat(formatedMessages);
     },[lobbyChat]);
 
     //----------------------------------------
@@ -188,7 +198,7 @@ export default function Lobby() {
                     </div>
 
                     <div className="py-5 hidden lg:block">
-                        <Chat data={ data }/>
+                        <Chat data={ chat }/>
                     </div>
 
                     <div className="mt-10 flex space-x-7">

@@ -22,7 +22,7 @@ const initialState: LobbyState = {
     gamemode: null,
     findState: false,
     leader: undefined,
-    chat: [],
+    chat: {},
     players: [],
     invites: [],
     lobbyRank: 0,

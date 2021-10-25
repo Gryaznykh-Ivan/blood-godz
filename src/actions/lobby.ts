@@ -171,6 +171,7 @@ const getLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
+                    console.log("GETLOBBY",data.reason.chat);
                     dispatch({
                         type: LOBBY_CHANGED,
                         players: data.reason.players,

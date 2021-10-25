@@ -1,26 +1,57 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Textarea from 'react-textarea-autosize';
-
-interface Message {
-    imageUrl: string,
-    name: string,
-    msg: string,
-    alien: boolean
-};
+import {Message} from "../../types/store";
+import {createLobby, msgChatLobby} from "../../actions/lobby";
+import {useDispatch, useSelector} from "react-redux";
+import {AppState} from "../../store";
 
 interface PropsFromComponent {
     data: Message[]
-};
+}
 
-export default function Chat({ data }: PropsFromComponent) {
+export default function Chat({data}: PropsFromComponent) {
+
+    const [loading, setLoading] = useState(true);
+
+    const dispatch = useDispatch();
+
+    const inputRef = useRef<HTMLTextAreaElement>(null);
+    const limitRef = useRef<HTMLDivElement>(null);
+
+    const lobbyId = useSelector((state: AppState) => state.lobby.id);
+    const lobbyLoadingState = useSelector((state: AppState) => state.lobby.loadingState);
+
+    useEffect(() => {
+        dispatch(createLobby());
+    }, []);
+
+    //ON LOBBY LOADING SEMAPHORE CHANGED
+    useEffect(() => {
+        if (lobbyId)
+            // > 0 means something loading, = 0 all loaded
+            setLoading(lobbyLoadingState > 0)
+    }, [lobbyLoadingState]);
+
+    const changeLimit = () => {
+        if (inputRef.current && limitRef.current)
+            limitRef.current.innerHTML = `${inputRef.current.value.length}/500`;
+    }
+
+    const sendMessage = () => {
+        if (lobbyId && inputRef.current && !loading)
+            dispatch(msgChatLobby(lobbyId, inputRef.current.value));
+    }
+
     return (
         <>
             <div className="bg-black bg-opacity-50 rounded-2xl p-4 text-white">
                 <div className="space-y-2.5 h-96 overflow-y-auto scrollbar pr-4">
                     {
-                        data.map((item) => <div className={`flex ${ !item.alien ? 'space-x-5 w-full' : 'flex-row-reverse'}`}>
-                            <img className="w-16 h-16 rounded-2xl" src={item.imageUrl} alt="" />
-                            <div className={` ${item.alien ? 'mr-5 bg-gradient-to-r from-gray-900 to-blue-500' : ' bg-gray-900'} w-full rounded-2xl px-5 py-1 font-medium`}>
+                        data.map((item) => <div
+                            className={`flex ${!item.alien ? 'space-x-5 w-full' : 'flex-row-reverse'}`}>
+                            <img className="w-16 h-16 rounded-2xl" src={item.imageUrl} alt=""/>
+                            <div
+                                className={` ${item.alien ? 'mr-5 bg-gradient-to-r from-gray-900 to-blue-500' : ' bg-gray-900'} w-full rounded-2xl px-5 py-1 font-medium`}>
                                 <div className="text-gray-400">{item.name}</div>
                                 <div className="text-sm">{item.msg}</div>
                             </div>
@@ -30,16 +61,21 @@ export default function Chat({ data }: PropsFromComponent) {
             </div>
 
             <div className="mt-5 relative">
-                <Textarea className="w-full rounded-xl bg-black bg-opacity-50 pr-16 py-3 pl-3 focus:outline-none resize-none" minRows={2} placeholder="Ваше сообщение..." />
-                <div className="absolute bottom-4 right-2 p-4 bg-gray-800 rounded-xl box-border cursor-pointer">
+                <Textarea maxLength={500} ref={inputRef} onChange={changeLimit}
+                          className={`w-full rounded-xl bg-black bg-opacity-50 pr-16 py-3 pl-3 focus:outline-none resize-none`}
+                          minRows={2} placeholder="Ваше сообщение..."/>
+                <div className={`absolute bottom-4 right-2 p-4 bg-gray-800 rounded-xl ${loading && 'loading cursor-wait' || ''} box-border cursor-pointer`}
+                     onClick={sendMessage}>
                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.2005 0.155459C19.0461 0.00625628 18.8145 -0.0396225 18.6119 0.0387054L1.07549 6.81675C0.874842 6.8943 0.740481 7.07894 0.732768 7.28766C0.725091 7.49635 0.845591 7.68975 1.04002 7.78087L7.95518 11.0216L11.309 17.7037C11.4005 17.8859 11.5915 18.0009 11.7999 18.0009C11.8064 18.0009 11.8129 18.0008 11.8194 18.0006C12.0353 17.9931 12.2265 17.8633 12.3067 17.6694L19.3213 0.724216C19.4023 0.528326 19.3549 0.304627 19.2005 0.155459ZM2.62772 7.35274L16.5486 1.97212L8.25235 9.98868L2.62772 7.35274ZM11.7521 16.1695L9.02414 10.7344L17.3205 2.71785L11.7521 16.1695Z" fill="#FEFEFE" />
+                        <path
+                            d="M19.2005 0.155459C19.0461 0.00625628 18.8145 -0.0396225 18.6119 0.0387054L1.07549 6.81675C0.874842 6.8943 0.740481 7.07894 0.732768 7.28766C0.725091 7.49635 0.845591 7.68975 1.04002 7.78087L7.95518 11.0216L11.309 17.7037C11.4005 17.8859 11.5915 18.0009 11.7999 18.0009C11.8064 18.0009 11.8129 18.0008 11.8194 18.0006C12.0353 17.9931 12.2265 17.8633 12.3067 17.6694L19.3213 0.724216C19.4023 0.528326 19.3549 0.304627 19.2005 0.155459ZM2.62772 7.35274L16.5486 1.97212L8.25235 9.98868L2.62772 7.35274ZM11.7521 16.1695L9.02414 10.7344L17.3205 2.71785L11.7521 16.1695Z"
+                            fill="#FEFEFE"/>
                     </svg>
                 </div>
             </div>
 
-            <div className="flex justify-end pr-2.5">
-                <div className="font-medium text-sm text-gray-400">0/500</div>
+            <div className="flex justify-end pr-2.5 select-none">
+                <div ref={limitRef} className="font-medium text-sm text-gray-400">0/500</div>
             </div>
         </>
     );
