@@ -7,8 +7,8 @@ import Chat from '../../components/Chat/Chat';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import BigSwitcher from '../../components/Switchers/Big';
 import {useDispatch, useSelector} from "react-redux";
-import {createLobby, getLobby, msgChatLobby, changeGameTypeLobby} from "../../actions/lobby";
-import {gamemode} from "../../types/store";
+import {createLobby, getLobby, msgChatLobby, changeGameTypeLobby, changeRegionLobby} from "../../actions/lobby";
+import {gamemode, regions} from "../../types/store";
 import {AppState} from "../../store";
 
 export default function Lobby() {
@@ -73,9 +73,27 @@ export default function Lobby() {
         dispatch(changeGameTypeLobby(lobbyID, mode));
     }
 
+    //On region changed in selector
+    const onRegionChanged = (region: regions) =>
+    {
+        if (!lobbyID) return;
+        dispatch(changeRegionLobby(lobbyID, region));
+    }
+
+    //On access changed in selector
+    const onAccessChanged = (access: number) =>
+    {
+
+    }
+
     //----------------------------------------
     //               Props
     //----------------------------------------
+
+    //Region list for selector
+    const region:{[key in regions]: string} = {
+        "RU": "Россия"
+    }
 
     //Gamemodes list for selector
     const modes:{[key in gamemode]: string} = {
@@ -85,13 +103,36 @@ export default function Lobby() {
         5: "5 vs 5"
     };
 
-    //Selector props
+    //Access list for selector
+    const accesses:{[key: string]: string} = {
+        0: "Публичный",
+        1: "Приватный"
+    };
+
+
+    //Region selector props
+    const selectRegionProps = {
+        type: "server",
+        variants: region,
+        placeholder: "RU",
+        callback: onRegionChanged
+    }
+
+    //Mode selector props
     const selectModeProps = {
         type: "mode",
         variants: modes,
         placeholder: lobbyMode,
         callback: onGamemodeChanged
     }
+
+    //Publicity selector props
+    const selectAccessProps = {
+        type: "access",
+        variants: accesses,
+        callback: onAccessChanged
+    }
+
 
     const data = [
         {name: 'James', msg: 'Новости, которые мы заслужили)', imageUrl: "/static/images/design/avatar.png", alien: false},
@@ -126,7 +167,9 @@ export default function Lobby() {
                         <div className="flex flex-col space-y-5 lg:flex-row lg:space-y-0 lg:space-x-10">
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Выбрать регион сервера:</div>
-                                <Select type="server"/>
+                                <div className={loading && 'loading' || ''}>
+                                    <Select {...selectRegionProps}/>
+                                </div>
                             </div>
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">

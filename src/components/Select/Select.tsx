@@ -1,9 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 
+interface Variants {
+    [key: string]: string
+}
+
 interface Props {
     customColor?: string,
     type?: string,
-    variants?: any,
+    variants?: Variants,
     placeholder?: any,
     callback?: (result: any) => void
 }
@@ -52,10 +56,10 @@ const Select = ({customColor, type, variants, placeholder, callback}: Props) => 
                 </div>
 
                 <div
-                    className={` w-full absolute z-10 top-12 left-0 bg-gray-900 rounded overflow-y-auto scrollbar max-h-40 p-1 ${!isOpened && "hidden"}`}>
+                    className={` w-full absolute z-10 top-12 left-0 bg-gray-900 rounded overflow-y-auto scrollbar max-h-40 ${!isOpened && "hidden"}`}>
                     <div className="space-y-2 text-center">
                         {variants && Object.keys(variants).map((index, i) =>
-                            <div className="cursor-pointer" key={i} onClick={() => onSelectEvent(index)}>{variants[index]}</div>
+                            <div className={`cursor-pointer p-1 ${index == selected && "bg-red-500" || ""}`} key={i} onClick={() => onSelectEvent(index)}>{variants[index]}</div>
                         )}
                     </div>
                 </div>

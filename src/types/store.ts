@@ -10,10 +10,11 @@ export interface AuthState {
 }
 
 export type gamemode = 1 | 2 | 3 | 5;
+export type regions = "RU";
 
 export interface LobbyState {
     id: string | null,
-    region: "RU",
+    region: regions,
     gamemode: gamemode | null,
     findState: boolean,
     chat: Array<string>,
