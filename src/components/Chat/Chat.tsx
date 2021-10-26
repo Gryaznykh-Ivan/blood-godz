@@ -67,7 +67,7 @@ export default function Chat({data}: PropsFromComponent) {
                 <Textarea maxLength={500} ref={inputRef} onChange={changeLimit} onKeyDown={onEnterPress}
                           className={`w-full rounded-xl bg-black bg-opacity-50 pr-16 py-3 pl-3 focus:outline-none resize-none`}
                           minRows={2} placeholder="Ваше сообщение..."/>
-                <div className={`absolute bottom-4 right-2 p-4 bg-gray-800 rounded-xl ${lobbyLoadings.msglobby && 'loading cursor-wait' || ''} box-border cursor-pointer`}
+                <div className={`absolute bottom-4 right-2 p-4 bg-gray-800 rounded-xl box-border cursor-pointer`}
                      onClick={sendMessage}>
                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
