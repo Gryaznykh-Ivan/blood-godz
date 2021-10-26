@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {ReactEventHandler, useEffect, useRef, useState} from "react";
 import Textarea from 'react-textarea-autosize';
 import {Message} from "../../types/store";
 import {createLobby, msgChatLobby} from "../../actions/lobby";
@@ -10,35 +10,21 @@ interface PropsFromComponent {
 }
 
 export default function Chat({data}: PropsFromComponent) {
-
-    const [loading, setLoading] = useState(true);
-
     const dispatch = useDispatch();
 
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const limitRef = useRef<HTMLDivElement>(null);
 
     const lobbyId = useSelector((state: AppState) => state.lobby.id);
-    const lobbyLoadingState = useSelector((state: AppState) => state.lobby.loadingState);
+    const lobbyLoadings = useSelector((state: AppState) => state.lobby.loadings);
+
 
     useEffect(() => {
         dispatch(createLobby());
     }, []);
 
-    //ON LOBBY LOADING SEMAPHORE CHANGED
-    useEffect(() => {
-        if (lobbyId)
-            // > 0 means something loading, = 0 all loaded
-            setLoading(lobbyLoadingState > 0)
-    }, [lobbyLoadingState]);
-
-    const changeLimit = () => {
-        if (inputRef.current && limitRef.current)
-            limitRef.current.innerHTML = `${inputRef.current.value.length}/500`;
-    }
-
     const sendMessage = () => {
-        if (lobbyId && inputRef.current && !loading)
+        if (lobbyId && inputRef.current && !lobbyLoadings.msglobby)
         {
             dispatch(msgChatLobby(lobbyId, inputRef.current.value));
             inputRef.current.value = '';
@@ -46,13 +32,26 @@ export default function Chat({data}: PropsFromComponent) {
 
     }
 
+    const changeLimit = () => {
+        if (inputRef.current && limitRef.current)
+            limitRef.current.innerHTML = `${inputRef.current.value.length}/500`;
+    }
+
+    const onEnterPress = (e: React.KeyboardEvent) => {
+        if (e.keyCode == 13  && !e.shiftKey)
+        {
+            e.preventDefault();
+            sendMessage();
+        }
+    }
+
     return (
         <>
             <div className="bg-black bg-opacity-50 rounded-2xl p-4 text-white">
                 <div className="space-y-2.5 h-96 overflow-y-auto scrollbar pr-4">
                     {
-                        data.map((item) => <div
-                            className={`flex ${!item.alien ? 'space-x-5 w-full' : 'flex-row-reverse'}`}>
+                        data.map((item, i) => <div
+                            className={`flex ${!item.alien ? 'space-x-5 w-full' : 'flex-row-reverse'}`} key={i}>
                             <img className="w-16 h-16 rounded-2xl" src={item.imageUrl} alt=""/>
                             <div
                                 className={` ${item.alien ? 'mr-5 bg-gradient-to-r from-gray-900 to-blue-500' : ' bg-gray-900'} w-full rounded-2xl px-5 py-1 font-medium`}>
@@ -65,10 +64,10 @@ export default function Chat({data}: PropsFromComponent) {
             </div>
 
             <div className="mt-5 relative">
-                <Textarea maxLength={500} ref={inputRef} onChange={changeLimit}
+                <Textarea maxLength={500} ref={inputRef} onChange={changeLimit} onKeyDown={onEnterPress}
                           className={`w-full rounded-xl bg-black bg-opacity-50 pr-16 py-3 pl-3 focus:outline-none resize-none`}
                           minRows={2} placeholder="Ваше сообщение..."/>
-                <div className={`absolute bottom-4 right-2 p-4 bg-gray-800 rounded-xl ${loading && 'loading cursor-wait' || ''} box-border cursor-pointer`}
+                <div className={`absolute bottom-4 right-2 p-4 bg-gray-800 rounded-xl ${lobbyLoadings.msglobby && 'loading cursor-wait' || ''} box-border cursor-pointer`}
                      onClick={sendMessage}>
                     <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path

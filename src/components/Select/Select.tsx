@@ -15,21 +15,17 @@ interface Props {
 const Select = ({customColor, type, variants, placeholder, callback}: Props) => {
     const selectRef = useRef<HTMLDivElement>(null);
     const [isOpened, setIsOpened] = useState(false);
-    const [selected, setSelected] = useState('');
+    const [selected, setSelected] = useState(placeholder);
 
     useEffect(() => {
-        if (callback)
-            callback(selected);
-    }, [selected]);
-
-    useEffect(() => {
-        if (placeholder !== undefined)
-            setSelected(placeholder);
-    }, [placeholder]);
+        setSelected(placeholder);
+    }, [placeholder])
 
     const onSelectEvent = (selected: string) => {
         selectRef.current?.blur();
         setSelected(selected);
+        if (callback)
+            callback(selected);
     };
 
     const onClickEvent = () => {
@@ -49,8 +45,8 @@ const Select = ({customColor, type, variants, placeholder, callback}: Props) => 
                     <div className="">{variants ? variants[selected] : "Пусто"}</div>
                     <svg className={`${isOpened && "transform rotate-180"}`} width="19" height="12" viewBox="0 0 19 12"
                          fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1.38447L9.58543 10.6152L18.1709 1.38447" stroke="#969696" stroke-linecap="round"
-                              stroke-linejoin="round"/>
+                        <path d="M1 1.38447L9.58543 10.6152L18.1709 1.38447" stroke="#969696" strokeLinecap="round"
+                              strokeLinejoin="round"/>
                     </svg>
                 </div>
 

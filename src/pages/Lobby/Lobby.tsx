@@ -15,7 +15,7 @@ import {
     setFindLobby,
     setPrivateLobby
 } from "../../actions/lobby";
-import {gamemode, Message, regions} from "../../types/store";
+import {gamemodes, Message, regions} from "../../types/store";
 import {AppState} from "../../store";
 
 export default function Lobby() {
@@ -28,7 +28,6 @@ export default function Lobby() {
 
     const [checked, setChecked] = useState(false);
     const [search, setSearch] = useState(false);
-    const [loading, setLoading] = useState(true);
     const [chat, setChat] = useState<Message[]>([]);
 
     //Lobby selectors
@@ -37,7 +36,7 @@ export default function Lobby() {
     const lobbyMode = useSelector((state: AppState) => state.lobby.gamemode);
     const lobbyFindState = useSelector((state:  AppState) => state.lobby.finding);
     const lobbyPrivate = useSelector((state: AppState) => state.lobby.private);
-    const lobbyLoadingState = useSelector((state: AppState) => state.lobby.loadingState);
+    const lobbyLoadings = useSelector((state: AppState) => state.lobby.loadings);
 
     //Auth selectors
     const username = useSelector((state: AppState) => state.auth.username);
@@ -61,13 +60,6 @@ export default function Lobby() {
     useEffect(() => {
         setSearch(lobbyFindState);
     }, [lobbyFindState]);
-
-    //ON LOBBY LOADING SEMAPHORE CHANGED
-    useEffect(() => {
-        if (lobbyMode)
-            // > 0 means something loading, = 0 all loaded
-            setLoading(lobbyLoadingState >  0)
-    }, [lobbyLoadingState]);
 
     //CATCH NEW MESSAGES
     useMemo(() => {
@@ -94,7 +86,7 @@ export default function Lobby() {
     //----------------------------------------
 
     //On gamemode changed in selector
-    const onGamemodeChanged = (mode: gamemode) =>
+    const onGamemodeChanged = (mode: gamemodes) =>
     {
         if (!lobbyID) return;
         dispatch(changeGameTypeLobby(lobbyID, mode));
@@ -131,7 +123,7 @@ export default function Lobby() {
     }
 
     //Gamemodes list for selector
-    const modes:{[key in gamemode]: string} = {
+    const modes:{[key in gamemodes]: string} = {
         1: "1 vs 1",
         2: "2 vs 2",
         3: "3 vs 3",
@@ -157,7 +149,7 @@ export default function Lobby() {
     const selectModeProps = {
         type: "mode",
         variants: modes,
-        placeholder: lobbyMode,
+        placeholder: lobbyMode as number,
         callback: onGamemodeChanged
     }
 
@@ -168,19 +160,6 @@ export default function Lobby() {
         placeholder: lobbyPrivate ? 1 : 0,
         callback: onAccessChanged
     }
-
-    console.log(selectAccessProps);
-
-
-    const data = [
-        {name: 'James', msg: 'Новости, которые мы заслужили)', imageUrl: "/static/images/design/avatar.png", alien: false},
-        {name: 'Nolan', msg: 'Зашелл коммент подлиннее написать немножечко, а то предыдущий коротенький.', imageUrl: "/static/images/design/avatar.png", alien: false},
-        {name: 'NickName', msg: 'Приятно смотреть накоец, да', imageUrl: "/static/images/design/avatar2.png", alien: true},
-        {name: 'James', msg: 'Новости, которые мы заслужили)', imageUrl: "/static/images/design/avatar.png", alien: false},
-        {name: 'Nolan', msg: 'Зашелл коммент подлиннее написать немножечко, а то предыдущий коротенький.', imageUrl: "/static/images/design/avatar.png", alien: false},
-        {name: 'NickName', msg: 'Приятно смотреть накоец, да)', imageUrl: "/static/images/design/avatar2.png", alien: true},
-        {name: 'Nolan', msg: 'окей', imageUrl: "/static/images/design/avatar.png", alien: false},
-    ];
 
     return (
         <>
@@ -193,7 +172,7 @@ export default function Lobby() {
                     <div className="mt-2.5 font-medium text-gray-400 lg:hidden uppercase">#пригласить друзей</div>
                     <div className="mt-7 hidden lg:block">
                         <div className="flex items-center space-x-56">
-                            { loading &&
+                            { lobbyLoadings.gamemode &&
                                 <div className={`font-bold text-4xl loading2`} /> ||
                                 <div className={`font-bold text-4xl`}>{lobbyMode} vs {lobbyMode}</div>
                             }
@@ -205,14 +184,14 @@ export default function Lobby() {
                         <div className="flex flex-col space-y-5 lg:flex-row lg:space-y-0 lg:space-x-10">
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Выбрать регион сервера:</div>
-                                <div className={loading && 'loading' || ''}>
+                                <div className={lobbyLoadings.region && 'loading' || ''}>
                                     <Select {...selectRegionProps}/>
                                 </div>
                             </div>
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Выбрать режим игры:</div>
-                                <div className={loading && 'loading' || ''}>
+                                <div className={lobbyLoadings.gamemode && 'loading' || ''}>
                                     <Select {...selectModeProps}/>
                                 </div>
 
@@ -220,7 +199,7 @@ export default function Lobby() {
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Доступ:</div>
-                                <div className={loading && 'loading' || ''}>
+                                <div className={lobbyLoadings.private && 'loading' || ''}>
                                     <Select {...selectAccessProps}/>
                                 </div>
                             </div>
@@ -234,7 +213,7 @@ export default function Lobby() {
                     <div className="mt-10 flex space-x-7">
                         <div className="w-full lg:w-auto">
                             {
-                                !loading ?
+                                !lobbyLoadings.gamemode ?
                                 <button
                                     className={`${ !search ? 'bg-pink' : 'bg-gradient-to-br from-gray-500 to-gray-900'} w-full rounded-full py-5 font-bold text-2xl focus:outline-none lg:w-80`}
                                     onClick={onFindStateChange}

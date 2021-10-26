@@ -12,6 +12,7 @@ import {
     NEW_LOBBY,
     SOCKET_FAILURE
 } from "../types/actions";
+import {regions} from "../types/store";
 
 const getBaseMessage = (callback: string): { [k: string]: any } => {
     return {
@@ -26,13 +27,15 @@ const getBaseMessage = (callback: string): { [k: string]: any } => {
 //--------------------------------------------
 
 const createLobby = (): AppThunk => async (dispatch: AppDispatch, getState) => {
-    dispatch({type: LOBBY_LOADING});
+    dispatch({type: LOBBY_LOADING, loadings: {create: true}});
     api.post('lobby/createLobby', {
         token: localStorage.getItem("token")
     }).then(response => {
         const {reason} = response.data;
         const id = reason.redirect.match(/\/lobby\/(.*)/)[1];
-        dispatch({type: NEW_LOBBY, id: id})
+        dispatch({type: NEW_LOBBY, id: id, loadings: {create: false}})
+    }).catch(error => {
+        dispatch({type: NEW_LOBBY, loadings: {create: false}})
     });
 }
 
@@ -45,39 +48,39 @@ const removeLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
     request.lobbyOid = id;
    socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {remove: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_REMOVED});
+                    dispatch({type: LOBBY_REMOVED, loadings: {remove: false}});
 
                     connection.close();
                 }
             }
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {remove: false}}))
 }
 
-const changeRegionLobby = (id: string, region: "RU"): AppThunk => async (dispatch: AppDispatch) => {
+const changeRegionLobby = (id: string, region: regions): AppThunk => async (dispatch: AppDispatch) => {
     let request = getBaseMessage(changeRegionLobby.name);
     request.lobbyOid = id;
     request.region = region;
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {region: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_REGION_CHANGED, region: region});
+                    dispatch({type: LOBBY_REGION_CHANGED, region: region, loadings: {region: false}});
                     connection.close();
                 }
             }
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {region: false}}))
 }
 
 const changeGameTypeLobby = (id: string, gamemode: 1|2|3|5): AppThunk => async (dispatch: AppDispatch) => {
@@ -86,18 +89,18 @@ const changeGameTypeLobby = (id: string, gamemode: 1|2|3|5): AppThunk => async (
     request.gamemode = gamemode;
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {gamemode: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_GAMEMODE_CHANGED, gamemode: gamemode});
+                    dispatch({type: LOBBY_GAMEMODE_CHANGED, gamemode: gamemode, loadings: {gamemode: false}});
                     connection.close();
                 }
             }
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {gamemode: false}}))
 }
 
 const addPlayerLobby = (id: string, playerId: number): AppThunk => async (dispatch: AppDispatch, getState) => {
@@ -106,19 +109,19 @@ const addPlayerLobby = (id: string, playerId: number): AppThunk => async (dispat
     request.playerToAddID = playerId;
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {addplayer: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
                     const players = getState().lobby.players
-                    dispatch({type: LOBBY_PLAYER_ADDED, players: [...players, playerId]});
+                    dispatch({type: LOBBY_PLAYER_ADDED, players: [...players, playerId], loadings: {addplayer: false}});
                     connection.close();
                 }
             }
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {addplayer: false}}))
 }
 
 const removePlayerLobby = (id: string, playerId: number): AppThunk => async (dispatch: AppDispatch) => {
@@ -127,18 +130,18 @@ const removePlayerLobby = (id: string, playerId: number): AppThunk => async (dis
     request.playerToAddID = playerId;
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {removeplayer: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_PLAYER_REMOVED, playerId: undefined});
+                    dispatch({type: LOBBY_PLAYER_REMOVED, loadings: {removeplayer: false}});
                     connection.close();
                 }
             }
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {removeplayer: false}}))
 }
 
 const setFindLobby = (id: string, find: boolean): AppThunk => async (dispatch: AppDispatch) => {
@@ -147,18 +150,18 @@ const setFindLobby = (id: string, find: boolean): AppThunk => async (dispatch: A
     request.findstate = find;
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {find: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_FIND_CHANGED, finding: find});
+                    dispatch({type: LOBBY_FIND_CHANGED, finding: find, loadings: {find: false}});
                     connection.close();
                 }
             };
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {find: false}}))
 }
 
 const setPrivateLobby = (id: string, privateMode: boolean): AppThunk => async (dispatch: AppDispatch) => {
@@ -167,18 +170,18 @@ const setPrivateLobby = (id: string, privateMode: boolean): AppThunk => async (d
     request.private = privateMode;
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {private: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_PRIVATE, private: privateMode});
+                    dispatch({type: LOBBY_PRIVATE, private: privateMode, loadings: {private: false}});
                     connection.close();
                 }
             };
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {private: false}}))
 }
 
 const getLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
@@ -186,6 +189,7 @@ const getLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
     request.lobbyOid = id;
     socket()
         .then((connection: WebSocket) => {
+            dispatch({type: LOBBY_CHANGED, loadings: {getlobby: true}})
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -196,13 +200,22 @@ const getLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
                         players: data.reason.players,
                         chat: data.reason.chat,
                         gamemode: data.reason.gamemode,
-                        finding: data.reason.finding
+                        finding: data.reason.finding,
+                        region: data.reason.region,
+                        private: data.reason.private,
+                        loadings: {
+                            getlobby: false,
+                            msglobby: false,
+                            gamemode: false,
+                            region: false,
+                            private: false
+                        }
                     });
                     //connection.close();
                 }
             };
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {getlobby: false}}))
 }
 
 const useInviteLinkLobby = (id: string, invite: string): AppThunk => async (dispatch: AppDispatch) => {
@@ -211,18 +224,18 @@ const useInviteLinkLobby = (id: string, invite: string): AppThunk => async (disp
     request.invitecode = invite;
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {uselink: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_USE_INVITE_LINK});
+                    dispatch({type: LOBBY_USE_INVITE_LINK, loadings: {uselink: false}});
                     connection.close();
                 }
             };
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {uselink: false}}))
 }
 
 const getInviteLinkLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
@@ -230,39 +243,38 @@ const getInviteLinkLobby = (id: string): AppThunk => async (dispatch: AppDispatc
     request.lobbyOid = id;
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {getlink: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_GET_INVITE_LINK});
+                    dispatch({type: LOBBY_GET_INVITE_LINK, loadings: {getlink: false}});
                     connection.close();
                 }
             };
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {getlink: false}}))
 }
 
 const msgChatLobby = (id: string, message: string): AppThunk => async (dispatch: AppDispatch) => {
-    console.log("REQUEST MSG");
     let request = getBaseMessage(msgChatLobby.name);
     request.lobbyOid = id;
     request.msg = message
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING});
+            dispatch({type: LOBBY_LOADING, loadings: {msglobby: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_MESSAGE, message: message});
+                    dispatch({type: LOBBY_MESSAGE, message: message, loadings: {msglobby: false}});
                     connection.close();
                 }
             };
         })
-        .catch(error => dispatch({type: SOCKET_FAILURE}))
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {msglobby: false}}))
 }
 
 export {

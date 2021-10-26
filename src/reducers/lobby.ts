@@ -27,7 +27,21 @@ const initialState: LobbyState = {
     invites: [],
     lobbyRank: 0,
     private: false,
-    loadingState: 0
+    loadings: {
+        create: true,
+        remove: true,
+        region: true,
+        gamemode: true,
+        addplayer: true,
+        removeplayer: true,
+        find: true,
+        private: true,
+        getlobby: true,
+        //NOT LOADING ON INIT, SO FALSE
+        uselink: false,
+        getlink: false,
+        msglobby: false,
+    }
 }
 
 export default function AuthReducer(state = initialState, action: LobbyActionTypes): LobbyState {
@@ -46,21 +60,11 @@ export default function AuthReducer(state = initialState, action: LobbyActionTyp
         case LOBBY_REMOVED:
         case NEW_LOBBY:
         case SOCKET_FAILURE:
-        {
-            const {type, ...action_data} = action;
-            // Changing loading semaphore state
-            state.loadingState = Math.max(state.loadingState - 1, 0);
-            return {...state, ...action_data};
-        }
         case LOBBY_CHANGED:
-        {
-            //Get lobby works as background proccess, so it doesn't need semaphore updates
-            const {type, ...action_data} = action;
-            return {...state, ...action_data};
-        }
         case LOBBY_LOADING:
-            state.loadingState = state.loadingState + 1;
-            return {...state};
+            const {type, ...action_data} = action;
+            action_data.loadings = {...state.loadings, ...action_data.loadings};
+            return {...state, ...action_data};
         default:
             return state;
     }

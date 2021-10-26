@@ -1,3 +1,5 @@
+import {gamemodes, LobbyChat, LobbyLoadings, regions} from "./store";
+
 export const LOADING_AUTH = "LOADING_AUTH"
 export const CHECK_AUTH = "CHECK_AUTH"
 export const LOGIN_AUTH = "LOGIN_AUTH"
@@ -52,58 +54,79 @@ interface RegisterAuthAction{
 }
 
 interface SocketFailureAction{
-    type: typeof SOCKET_FAILURE
+    type: typeof SOCKET_FAILURE,
+    loadings: LobbyLoadings
 }
 
-interface LobbyLoadingAction{
-    type: typeof LOBBY_LOADING
+interface LobbyBaseAction {
+    loadings: LobbyLoadings
 }
 
-interface NewLobbyAction{
-    type: typeof NEW_LOBBY
+interface LobbyLoadingAction extends LobbyBaseAction{
+    type: typeof LOBBY_LOADING,
 }
 
-interface RemoveLobbyAction{
+interface NewLobbyAction extends LobbyBaseAction{
+    type: typeof NEW_LOBBY,
+    id?: string,
+}
+
+interface RemoveLobbyAction extends LobbyBaseAction{
     type: typeof LOBBY_REMOVED
 }
 
-interface LobbyRegionAction{
-    type: typeof LOBBY_REGION_CHANGED
+interface LobbyRegionAction extends LobbyBaseAction{
+    type: typeof LOBBY_REGION_CHANGED,
+    region: regions
 }
 
-interface LobbyGamemodeAction{
-    type: typeof LOBBY_GAMEMODE_CHANGED
+interface LobbyGamemodeAction extends LobbyBaseAction{
+    type: typeof LOBBY_GAMEMODE_CHANGED,
+    gamemode: gamemodes
 }
 
-interface LobbyPlayerAddAction{
-    type: typeof LOBBY_PLAYER_ADDED
+interface LobbyPlayerAddAction extends LobbyBaseAction{
+    type: typeof LOBBY_PLAYER_ADDED,
+    players: Array<number>
 }
 
-interface LobbyPlayerRemoveAction{
+interface LobbyPlayerRemoveAction extends LobbyBaseAction{
     type: typeof LOBBY_PLAYER_REMOVED
 }
 
-interface LobbyStateAction{
-    type: typeof LOBBY_FIND_CHANGED
+interface LobbyStateAction extends LobbyBaseAction{
+    type: typeof LOBBY_FIND_CHANGED,
+    finding: boolean
 }
 
-interface LobbyPrivateAction{
-    type: typeof LOBBY_PRIVATE
+interface LobbyPrivateAction extends LobbyBaseAction{
+    type: typeof LOBBY_PRIVATE,
+    private: boolean
 }
 
-interface LobbyChangedAction{
-    type: typeof LOBBY_CHANGED
+interface LobbyChangedAction extends LobbyBaseAction{
+    type: typeof LOBBY_CHANGED,
+    id?: string | null,
+    region?: regions,
+    gamemode?: gamemodes | null,
+    finding?: boolean,
+    chat?: LobbyChat,
+    players?: Array<number>,
+    invites?: Array<string>,
+    leader?: number|undefined,
+    private?: boolean,
+    lobbyRank?: number,
 }
 
-interface LobbyInviteUseAction{
+interface LobbyInviteUseAction extends LobbyBaseAction{
     type: typeof LOBBY_USE_INVITE_LINK
 }
 
-interface LobbyInviteGetAction{
+interface LobbyInviteGetAction extends LobbyBaseAction{
     type: typeof LOBBY_GET_INVITE_LINK
 }
 
-interface LobbyMessageAction{
+interface LobbyMessageAction extends LobbyBaseAction{
     type: typeof LOBBY_MESSAGE,
     message: string
 }

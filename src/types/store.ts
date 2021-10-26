@@ -9,7 +9,7 @@ export interface AuthState {
     error: string
 }
 
-export type gamemode = 1 | 2 | 3 | 5;
+export type gamemodes = 1 | 2 | 3 | 5;
 export type regions = "RU";
 
 export interface Message {
@@ -28,10 +28,25 @@ export interface LobbyChat {
     [key: string]: LobbyMessage
 }
 
+export interface LobbyLoadings {
+    create?: boolean,
+    remove?: boolean,
+    region?: boolean,
+    gamemode?: boolean,
+    addplayer?: boolean,
+    removeplayer?: boolean,
+    find?: boolean,
+    private?: boolean,
+    getlobby?: boolean,
+    uselink?: boolean,
+    getlink?: boolean,
+    msglobby?: boolean,
+}
+
 export interface LobbyState {
     id: string | null,
     region: regions,
-    gamemode: gamemode | null,
+    gamemode: gamemodes | null,
     finding: boolean,
     chat: LobbyChat,
     players: Array<number>,
@@ -39,5 +54,5 @@ export interface LobbyState {
     leader: number|undefined,
     private: boolean,
     lobbyRank: number,
-    loadingState: number
+    loadings: LobbyLoadings
 }
