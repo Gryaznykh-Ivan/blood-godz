@@ -7,7 +7,7 @@ import Chat from '../../components/Chat/Chat';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import BigSwitcher from '../../components/Switchers/Big';
 import {useDispatch, useSelector} from "react-redux";
-import {createLobby, getLobby, changeGameTypeLobby, changeRegionLobby} from "../../actions/lobby";
+import {createLobby, getLobby, changeGameTypeLobby, changeRegionLobby, setFindLobby} from "../../actions/lobby";
 import {gamemode, Message, regions} from "../../types/store";
 import {AppState} from "../../store";
 
@@ -24,10 +24,14 @@ export default function Lobby() {
     const [loading, setLoading] = useState(true);
     const [chat, setChat] = useState<Message[]>([]);
 
-    const lobbyLoadingState = useSelector((state: AppState) => state.lobby.loadingState);
+    //Lobby selectors
     const lobbyID = useSelector((state: AppState) => state.lobby.id);
     const lobbyChat = useSelector((state: AppState) => state.lobby.chat);
     const lobbyMode = useSelector((state: AppState) => state.lobby.gamemode);
+    const lobbyFindState = useSelector((state:  AppState) => state.lobby.finding);
+    const lobbyLoadingState = useSelector((state: AppState) => state.lobby.loadingState);
+
+    //Auth selectors
     const username = useSelector((state: AppState) => state.auth.username);
 
     //----------------------------------------
@@ -45,6 +49,11 @@ export default function Lobby() {
         dispatch(getLobby(lobbyID));
     }, [lobbyID]);
 
+    //ON LOBBY FIND STATE CHANGED
+    useEffect(() => {
+        setSearch(lobbyFindState);
+    }, [lobbyFindState]);
+
     //ON LOBBY LOADING SEMAPHORE CHANGED
     useEffect(() => {
         if (lobbyMode)
@@ -54,7 +63,6 @@ export default function Lobby() {
 
     //CATCH NEW MESSAGES
     useMemo(() => {
-        console.log(lobbyChat);
         let formatedMessages:Message[] = [];
         Object.keys(lobbyChat).map((key, index) => {
             formatedMessages.push({
@@ -95,6 +103,13 @@ export default function Lobby() {
     const onAccessChanged = (access: number) =>
     {
 
+    }
+
+    //On find state changed by button
+    const onFindStateChange = () =>
+    {
+        if (lobbyID)
+            dispatch(setFindLobby(lobbyID, !lobbyFindState));
     }
 
     //----------------------------------------
@@ -205,12 +220,15 @@ export default function Lobby() {
                     <div className="mt-10 flex space-x-7">
                         <div className="w-full lg:w-auto">
                             {
+                                !loading ?
                                 <button
                                     className={`${ !search ? 'bg-pink' : 'bg-gradient-to-br from-gray-500 to-gray-900'} w-full rounded-full py-5 font-bold text-2xl focus:outline-none lg:w-80`}
-                                    onClick={() => setSearch(prev => !prev)}
+                                    onClick={onFindStateChange}
                                 >
                                     { !search ? 'Поиск игры': 'Остановить поиск'}
                                 </button>
+                                :
+                                <button className={`bg-opacity-0 loading2 w-full rounded-full py-5 font-bold text-2xl focus:outline-none lg:w-80`}/>
                             }
                             <div className="mt-4">
                                 <div className="flex items-center space-x-2.5">

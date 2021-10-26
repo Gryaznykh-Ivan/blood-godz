@@ -153,7 +153,7 @@ const setFindLobby = (id: string, find: boolean): AppThunk => async (dispatch: A
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    dispatch({type: LOBBY_FIND_CHANGED, findState: find});
+                    dispatch({type: LOBBY_FIND_CHANGED, finding: find});
                     connection.close();
                 }
             };
@@ -171,13 +171,12 @@ const getLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
                 const data = JSON.parse(event.data);
                 if (data.success)
                 {
-                    console.log("GETLOBBY",data.reason.chat);
                     dispatch({
                         type: LOBBY_CHANGED,
                         players: data.reason.players,
                         chat: data.reason.chat,
                         gamemode: data.reason.gamemode,
-                        loaded: true
+                        finding: data.reason.finding
                     });
                     //connection.close();
                 }

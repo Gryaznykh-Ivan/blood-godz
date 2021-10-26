@@ -20,7 +20,7 @@ const initialState: LobbyState = {
     id: null,
     region: 'RU',
     gamemode: null,
-    findState: false,
+    finding: false,
     leader: undefined,
     chat: {},
     players: [],

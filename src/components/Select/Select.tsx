@@ -42,7 +42,7 @@ const Select = ({customColor, type, variants, placeholder, callback}: Props) => 
     };
 
     return (
-        <div ref={selectRef} onBlur={onBlurEvent} tabIndex={3}>
+        <div ref={selectRef} className="select-none" onBlur={onBlurEvent} tabIndex={3}>
             <div className={`relative w-full rounded py-2 px-4 ${customColor ?? "bg-gray-900"} `}>
 
                 <div className="flex items-center justify-between cursor-pointer space-x-2.5"

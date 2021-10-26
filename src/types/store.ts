@@ -32,7 +32,7 @@ export interface LobbyState {
     id: string | null,
     region: regions,
     gamemode: gamemode | null,
-    findState: boolean,
+    finding: boolean,
     chat: LobbyChat,
     players: Array<number>,
     invites: Array<string>,
