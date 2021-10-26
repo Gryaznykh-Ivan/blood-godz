@@ -7,7 +7,14 @@ import Chat from '../../components/Chat/Chat';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import BigSwitcher from '../../components/Switchers/Big';
 import {useDispatch, useSelector} from "react-redux";
-import {createLobby, getLobby, changeGameTypeLobby, changeRegionLobby, setFindLobby} from "../../actions/lobby";
+import {
+    createLobby,
+    getLobby,
+    changeGameTypeLobby,
+    changeRegionLobby,
+    setFindLobby,
+    setPrivateLobby
+} from "../../actions/lobby";
 import {gamemode, Message, regions} from "../../types/store";
 import {AppState} from "../../store";
 
@@ -29,6 +36,7 @@ export default function Lobby() {
     const lobbyChat = useSelector((state: AppState) => state.lobby.chat);
     const lobbyMode = useSelector((state: AppState) => state.lobby.gamemode);
     const lobbyFindState = useSelector((state:  AppState) => state.lobby.finding);
+    const lobbyPrivate = useSelector((state: AppState) => state.lobby.private);
     const lobbyLoadingState = useSelector((state: AppState) => state.lobby.loadingState);
 
     //Auth selectors
@@ -102,7 +110,8 @@ export default function Lobby() {
     //On access changed in selector
     const onAccessChanged = (access: number) =>
     {
-
+        if (!lobbyID) return;
+        dispatch(setPrivateLobby(lobbyID, access === 1));
     }
 
     //On find state changed by button
@@ -131,8 +140,8 @@ export default function Lobby() {
 
     //Access list for selector
     const accesses:{[key: string]: string} = {
-        0: "Публичный",
-        1: "Приватный"
+        0: "Закрыто",
+        1: "Открыто"
     };
 
 
@@ -156,8 +165,11 @@ export default function Lobby() {
     const selectAccessProps = {
         type: "access",
         variants: accesses,
+        placeholder: lobbyPrivate ? 1 : 0,
         callback: onAccessChanged
     }
+
+    console.log(selectAccessProps);
 
 
     const data = [
@@ -208,7 +220,9 @@ export default function Lobby() {
 
                             <div className="flex flex-col space-y-2.5 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-5">
                                 <div className="">Доступ:</div>
-                                <Select type="access"/>
+                                <div className={loading && 'loading' || ''}>
+                                    <Select {...selectAccessProps}/>
+                                </div>
                             </div>
                         </div>
                     </div>

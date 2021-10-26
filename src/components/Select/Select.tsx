@@ -23,7 +23,7 @@ const Select = ({customColor, type, variants, placeholder, callback}: Props) => 
     }, [selected]);
 
     useEffect(() => {
-        if (placeholder)
+        if (placeholder !== undefined)
             setSelected(placeholder);
     }, [placeholder]);
 
@@ -36,7 +36,6 @@ const Select = ({customColor, type, variants, placeholder, callback}: Props) => 
         setIsOpened(prev => !prev);
     };
 
-
     const onBlurEvent = () => {
         setIsOpened(false);
     };
@@ -47,7 +46,7 @@ const Select = ({customColor, type, variants, placeholder, callback}: Props) => 
 
                 <div className="flex items-center justify-between cursor-pointer space-x-2.5"
                      onClick={() => onClickEvent()}>
-                    <div className="">{(variants && variants[selected]) || "Пусто"}</div>
+                    <div className="">{variants ? variants[selected] : "Пусто"}</div>
                     <svg className={`${isOpened && "transform rotate-180"}`} width="19" height="12" viewBox="0 0 19 12"
                          fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 1.38447L9.58543 10.6152L18.1709 1.38447" stroke="#969696" stroke-linecap="round"

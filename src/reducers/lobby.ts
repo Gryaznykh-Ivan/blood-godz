@@ -7,7 +7,7 @@ import {
     LOBBY_LOADING,
     LOBBY_MESSAGE,
     LOBBY_PLAYER_ADDED,
-    LOBBY_PLAYER_REMOVED,
+    LOBBY_PLAYER_REMOVED, LOBBY_PRIVATE,
     LOBBY_REGION_CHANGED,
     LOBBY_REMOVED,
     LOBBY_USE_INVITE_LINK,
@@ -38,6 +38,7 @@ export default function AuthReducer(state = initialState, action: LobbyActionTyp
         case LOBBY_GET_INVITE_LINK:
         case LOBBY_USE_INVITE_LINK:
         case LOBBY_FIND_CHANGED:
+        case LOBBY_PRIVATE:
         case LOBBY_PLAYER_REMOVED:
         case LOBBY_PLAYER_ADDED:
         case LOBBY_GAMEMODE_CHANGED:

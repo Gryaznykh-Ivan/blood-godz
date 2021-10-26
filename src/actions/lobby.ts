@@ -7,7 +7,7 @@ import {
     LOBBY_CHANGED,
     LOBBY_FIND_CHANGED,
     LOBBY_GAMEMODE_CHANGED, LOBBY_GET_INVITE_LINK, LOBBY_LOADING, LOBBY_MESSAGE,
-    LOBBY_PLAYER_ADDED, LOBBY_PLAYER_REMOVED,
+    LOBBY_PLAYER_ADDED, LOBBY_PLAYER_REMOVED, LOBBY_PRIVATE,
     LOBBY_REGION_CHANGED, LOBBY_REMOVED, LOBBY_USE_INVITE_LINK,
     NEW_LOBBY,
     SOCKET_FAILURE
@@ -161,6 +161,26 @@ const setFindLobby = (id: string, find: boolean): AppThunk => async (dispatch: A
         .catch(error => dispatch({type: SOCKET_FAILURE}))
 }
 
+const setPrivateLobby = (id: string, privateMode: boolean): AppThunk => async (dispatch: AppDispatch) => {
+    let request = getBaseMessage(setFindLobby.name);
+    request.lobbyOid = id;
+    request.private = privateMode;
+    socket()
+        .then((connection: WebSocket) => {
+            dispatch({type: LOBBY_LOADING});
+            connection.send(JSON.stringify(request))
+            connection.onmessage = event => {
+                const data = JSON.parse(event.data);
+                if (data.success)
+                {
+                    dispatch({type: LOBBY_PRIVATE, private: privateMode});
+                    connection.close();
+                }
+            };
+        })
+        .catch(error => dispatch({type: SOCKET_FAILURE}))
+}
+
 const getLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
     let request = getBaseMessage(getLobby.name);
     request.lobbyOid = id;
@@ -253,6 +273,7 @@ export {
     addPlayerLobby,
     removePlayerLobby,
     setFindLobby,
+    setPrivateLobby,
     getLobby,
     useInviteLinkLobby,
     getInviteLinkLobby,
