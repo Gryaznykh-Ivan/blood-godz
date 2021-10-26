@@ -10,7 +10,6 @@ export interface AuthState {
 }
 
 export type gamemodes = 1 | 2 | 3 | 5;
-export type regions = "RU";
 
 export interface Message {
     imageUrl: string,
@@ -31,6 +30,7 @@ export interface LobbyChat {
 export interface LobbyLoadings {
     create?: boolean,
     remove?: boolean,
+    getregion?: boolean,
     region?: boolean,
     gamemode?: boolean,
     addplayer?: boolean,
@@ -45,7 +45,8 @@ export interface LobbyLoadings {
 
 export interface LobbyState {
     id: string | null,
-    region: regions,
+    region: string,
+    regions: object,
     gamemode: gamemodes | null,
     finding: boolean,
     chat: LobbyChat,

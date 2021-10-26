@@ -1,21 +1,21 @@
 import React, {useState, useEffect, useMemo, useRef} from 'react';
 
 import Search from '../../components/Lobby/Search';
-import Select from '../../components/Select/Select';
+import Select, {Variants} from '../../components/Select/Select';
 
 import Chat from '../../components/Chat/Chat';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import BigSwitcher from '../../components/Switchers/Big';
-import {useDispatch, useSelector} from "react-redux";
+import {batch, useDispatch, useSelector} from "react-redux";
 import {
     createLobby,
     getLobby,
     changeGameTypeLobby,
     changeRegionLobby,
     setFindLobby,
-    setPrivateLobby
+    setPrivateLobby, getRegionsLobby
 } from "../../actions/lobby";
-import {gamemodes, Message, regions} from "../../types/store";
+import {gamemodes, Message} from "../../types/store";
 import {AppState} from "../../store";
 
 export default function Lobby() {
@@ -33,10 +33,12 @@ export default function Lobby() {
     //Lobby selectors
     const lobbyID = useSelector((state: AppState) => state.lobby.id);
     const lobbyChat = useSelector((state: AppState) => state.lobby.chat);
+    const lobbyRegion = useSelector((state: AppState) => state.lobby.region);
     const lobbyMode = useSelector((state: AppState) => state.lobby.gamemode);
     const lobbyFindState = useSelector((state:  AppState) => state.lobby.finding);
     const lobbyPrivate = useSelector((state: AppState) => state.lobby.private);
     const lobbyLoadings = useSelector((state: AppState) => state.lobby.loadings);
+    const lobbyRegions = useSelector((state: AppState) => state.lobby.regions);
 
     //Auth selectors
     const username = useSelector((state: AppState) => state.auth.username);
@@ -53,7 +55,10 @@ export default function Lobby() {
     useEffect(() => {
         if (!lobbyID) return;
         //subscribing to lobby updates
-        dispatch(getLobby(lobbyID));
+        batch(() => {
+            dispatch(getLobby(lobbyID));
+            dispatch(getRegionsLobby(lobbyID));
+        })
     }, [lobbyID]);
 
     //ON LOBBY FIND STATE CHANGED
@@ -89,11 +94,11 @@ export default function Lobby() {
     const onGamemodeChanged = (mode: gamemodes) =>
     {
         if (!lobbyID) return;
-        dispatch(changeGameTypeLobby(lobbyID, mode));
+            dispatch(changeGameTypeLobby(lobbyID, mode));
     }
 
     //On region changed in selector
-    const onRegionChanged = (region: regions) =>
+    const onRegionChanged = (region: string) =>
     {
         if (!lobbyID) return;
         dispatch(changeRegionLobby(lobbyID, region));
@@ -117,11 +122,6 @@ export default function Lobby() {
     //               Props
     //----------------------------------------
 
-    //Region list for selector
-    const region:{[key in regions]: string} = {
-        "RU": "Россия"
-    }
-
     //Gamemodes list for selector
     const modes:{[key in gamemodes]: string} = {
         1: "1 vs 1",
@@ -136,12 +136,11 @@ export default function Lobby() {
         1: "Открыто"
     };
 
-
     //Region selector props
     const selectRegionProps = {
         type: "server",
-        variants: region,
-        placeholder: "RU",
+        variants: lobbyRegions as Variants,
+        placeholder: lobbyRegion,
         callback: onRegionChanged
     }
 

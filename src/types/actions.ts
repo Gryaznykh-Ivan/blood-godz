@@ -1,4 +1,4 @@
-import {gamemodes, LobbyChat, LobbyLoadings, regions} from "./store";
+import {gamemodes, LobbyChat, LobbyLoadings} from "./store";
 
 export const LOADING_AUTH = "LOADING_AUTH"
 export const CHECK_AUTH = "CHECK_AUTH"
@@ -11,6 +11,7 @@ export const GET_NEWS = "GET_NEWS";
 export const SOCKET_FAILURE = "SOCKET_FAILURE";
 export const NEW_LOBBY = "NEW_LOBBY";
 export const LOBBY_REMOVED = "LOBBY_REMOVED";
+export const LOBBY_REGION_GET = "LOBBY_REGION_GET";
 export const LOBBY_REGION_CHANGED = "LOBBY_REGION_CHANGED";
 export const LOBBY_GAMEMODE_CHANGED = "LOBBY_GAMEMODE_CHANGED";
 export const LOBBY_PLAYER_ADDED = "LOBBY_PLAYER_ADDED";
@@ -75,9 +76,14 @@ interface RemoveLobbyAction extends LobbyBaseAction{
     type: typeof LOBBY_REMOVED
 }
 
+interface LobbyRegionGetAction extends LobbyBaseAction{
+    type: typeof LOBBY_REGION_GET,
+    regions: object
+}
+
 interface LobbyRegionAction extends LobbyBaseAction{
     type: typeof LOBBY_REGION_CHANGED,
-    region: regions
+    region: string
 }
 
 interface LobbyGamemodeAction extends LobbyBaseAction{
@@ -107,7 +113,7 @@ interface LobbyPrivateAction extends LobbyBaseAction{
 interface LobbyChangedAction extends LobbyBaseAction{
     type: typeof LOBBY_CHANGED,
     id?: string | null,
-    region?: regions,
+    region?: string,
     gamemode?: gamemodes | null,
     finding?: boolean,
     chat?: LobbyChat,
@@ -156,4 +162,4 @@ export type Locales = "rus" | "eng"
 export type NewsActionTypes = AddNews
 export type LocalizationActionTypes = ChangeLocalisation
 export type AuthActionTypes = LoadingAuthAction | LoginAuthAction | RegisterAuthAction | FailedAuthAction | LogoutAuthAction | CheckAuthAction
-export type LobbyActionTypes = SocketFailureAction | NewLobbyAction | LobbyRegionAction | LobbyGamemodeAction | LobbyPlayerAddAction | LobbyPlayerRemoveAction | LobbyStateAction | LobbyPrivateAction | LobbyChangedAction |  LobbyInviteUseAction | LobbyInviteGetAction | LobbyMessageAction | RemoveLobbyAction | LobbyLoadingAction
+export type LobbyActionTypes = SocketFailureAction | NewLobbyAction | LobbyRegionGetAction | LobbyRegionAction | LobbyGamemodeAction | LobbyPlayerAddAction | LobbyPlayerRemoveAction | LobbyStateAction | LobbyPrivateAction | LobbyChangedAction |  LobbyInviteUseAction | LobbyInviteGetAction | LobbyMessageAction | RemoveLobbyAction | LobbyLoadingAction

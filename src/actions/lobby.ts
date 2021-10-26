@@ -8,11 +8,10 @@ import {
     LOBBY_FIND_CHANGED,
     LOBBY_GAMEMODE_CHANGED, LOBBY_GET_INVITE_LINK, LOBBY_LOADING, LOBBY_MESSAGE,
     LOBBY_PLAYER_ADDED, LOBBY_PLAYER_REMOVED, LOBBY_PRIVATE,
-    LOBBY_REGION_CHANGED, LOBBY_REMOVED, LOBBY_USE_INVITE_LINK,
+    LOBBY_REGION_CHANGED, LOBBY_REGION_GET, LOBBY_REMOVED, LOBBY_USE_INVITE_LINK,
     NEW_LOBBY,
     SOCKET_FAILURE
 } from "../types/actions";
-import {regions} from "../types/store";
 
 const getBaseMessage = (callback: string): { [k: string]: any } => {
     return {
@@ -46,9 +45,9 @@ const createLobby = (): AppThunk => async (dispatch: AppDispatch, getState) => {
 const removeLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
     let request = getBaseMessage(removeLobby.name);
     request.lobbyOid = id;
+    dispatch({type: LOBBY_LOADING, loadings: {remove: true}});
    socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {remove: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -63,13 +62,39 @@ const removeLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
         .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {remove: false}}))
 }
 
-const changeRegionLobby = (id: string, region: regions): AppThunk => async (dispatch: AppDispatch) => {
+const getRegionsLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
+    let request = getBaseMessage(getRegionsLobby.name);
+    request.lobbyOid = id;
+    dispatch({type: LOBBY_LOADING, loadings: {getregion: true}});
+    socket()
+        .then((connection: WebSocket) => {
+            connection.send(JSON.stringify(request))
+            connection.onmessage = event => {
+                const data = JSON.parse(event.data);
+                if (data.success)
+                {
+                    let regions = [];
+                    for (let country in data.reason)
+                        for (let regionId in data.reason[country])
+                        {
+                            const region = data.reason[country][regionId];
+                            regions[region] = region;
+                        }
+                    dispatch({type: LOBBY_REGION_GET, regions: regions, loadings: {getregion: false}});
+                    connection.close();
+                }
+            }
+        })
+        .catch(error => dispatch({type: SOCKET_FAILURE, loadings: {getregion: false}}))
+}
+
+const changeRegionLobby = (id: string, region: string): AppThunk => async (dispatch: AppDispatch) => {
     let request = getBaseMessage(changeRegionLobby.name);
     request.lobbyOid = id;
     request.region = region;
+    dispatch({type: LOBBY_LOADING, loadings: {region: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {region: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -87,9 +112,9 @@ const changeGameTypeLobby = (id: string, gamemode: 1|2|3|5): AppThunk => async (
     let request = getBaseMessage(changeGameTypeLobby.name);
     request.lobbyOid = id;
     request.gamemode = gamemode;
+    dispatch({type: LOBBY_LOADING, loadings: {gamemode: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {gamemode: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -107,9 +132,9 @@ const addPlayerLobby = (id: string, playerId: number): AppThunk => async (dispat
     let request = getBaseMessage(addPlayerLobby.name);
     request.lobbyOid = id;
     request.playerToAddID = playerId;
+    dispatch({type: LOBBY_LOADING, loadings: {addplayer: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {addplayer: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -128,9 +153,9 @@ const removePlayerLobby = (id: string, playerId: number): AppThunk => async (dis
     let request = getBaseMessage(removePlayerLobby.name);
     request.lobbyOid = id;
     request.playerToAddID = playerId;
+    dispatch({type: LOBBY_LOADING, loadings: {removeplayer: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {removeplayer: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -148,9 +173,9 @@ const setFindLobby = (id: string, find: boolean): AppThunk => async (dispatch: A
     let request = getBaseMessage(setFindLobby.name);
     request.lobbyOid = id;
     request.findstate = find;
+    dispatch({type: LOBBY_LOADING, loadings: {find: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {find: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -165,12 +190,12 @@ const setFindLobby = (id: string, find: boolean): AppThunk => async (dispatch: A
 }
 
 const setPrivateLobby = (id: string, privateMode: boolean): AppThunk => async (dispatch: AppDispatch) => {
-    let request = getBaseMessage(setFindLobby.name);
+    let request = getBaseMessage(setPrivateLobby.name);
     request.lobbyOid = id;
     request.private = privateMode;
+    dispatch({type: LOBBY_LOADING, loadings: {private: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {private: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -187,9 +212,9 @@ const setPrivateLobby = (id: string, privateMode: boolean): AppThunk => async (d
 const getLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
     let request = getBaseMessage(getLobby.name);
     request.lobbyOid = id;
+    dispatch({type: LOBBY_CHANGED, loadings: {getlobby: true}})
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_CHANGED, loadings: {getlobby: true}})
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -222,9 +247,9 @@ const useInviteLinkLobby = (id: string, invite: string): AppThunk => async (disp
     let request = getBaseMessage(useInviteLinkLobby.name);
     request.lobbyOid = id;
     request.invitecode = invite;
+    dispatch({type: LOBBY_LOADING, loadings: {uselink: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {uselink: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -241,9 +266,9 @@ const useInviteLinkLobby = (id: string, invite: string): AppThunk => async (disp
 const getInviteLinkLobby = (id: string): AppThunk => async (dispatch: AppDispatch) => {
     let request = getBaseMessage(getInviteLinkLobby.name);
     request.lobbyOid = id;
+    dispatch({type: LOBBY_LOADING, loadings: {getlink: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {getlink: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -261,9 +286,9 @@ const msgChatLobby = (id: string, message: string): AppThunk => async (dispatch:
     let request = getBaseMessage(msgChatLobby.name);
     request.lobbyOid = id;
     request.msg = message
+    dispatch({type: LOBBY_LOADING, loadings: {msglobby: true}});
     socket()
         .then((connection: WebSocket) => {
-            dispatch({type: LOBBY_LOADING, loadings: {msglobby: true}});
             connection.send(JSON.stringify(request))
             connection.onmessage = event => {
                 const data = JSON.parse(event.data);
@@ -280,6 +305,7 @@ const msgChatLobby = (id: string, message: string): AppThunk => async (dispatch:
 export {
     createLobby,
     removeLobby,
+    getRegionsLobby,
     changeRegionLobby,
     changeGameTypeLobby,
     addPlayerLobby,

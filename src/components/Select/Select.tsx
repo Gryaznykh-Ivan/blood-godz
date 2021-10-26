@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 
-interface Variants {
+export interface Variants {
     [key: string]: string
 }
 

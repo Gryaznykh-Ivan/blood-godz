@@ -8,7 +8,7 @@ import {
     LOBBY_MESSAGE,
     LOBBY_PLAYER_ADDED,
     LOBBY_PLAYER_REMOVED, LOBBY_PRIVATE,
-    LOBBY_REGION_CHANGED,
+    LOBBY_REGION_CHANGED, LOBBY_REGION_GET,
     LOBBY_REMOVED,
     LOBBY_USE_INVITE_LINK,
     LobbyActionTypes,
@@ -18,6 +18,7 @@ import {
 
 const initialState: LobbyState = {
     id: null,
+    regions: [],
     region: 'RU',
     gamemode: null,
     finding: false,
@@ -30,6 +31,7 @@ const initialState: LobbyState = {
     loadings: {
         create: true,
         remove: true,
+        getregion: true,
         region: true,
         gamemode: true,
         addplayer: true,
@@ -57,6 +59,7 @@ export default function AuthReducer(state = initialState, action: LobbyActionTyp
         case LOBBY_PLAYER_ADDED:
         case LOBBY_GAMEMODE_CHANGED:
         case LOBBY_REGION_CHANGED:
+        case LOBBY_REGION_GET:
         case LOBBY_REMOVED:
         case NEW_LOBBY:
         case SOCKET_FAILURE:
